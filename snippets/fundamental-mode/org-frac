@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: org-frac
+# key: $frac
+# --
+$\frac{${1:upper}}_{${2:down}}$0$
