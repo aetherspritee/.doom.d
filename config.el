@@ -21,8 +21,8 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-(setq doom-font (font-spec :family "Hack Nerd Font" :size 11.0 :weight 'semi-light)
-      doom-variable-pitch-font (font-spec :family "Hack Nerd Font" :size 15))
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 12.0 :weight 'semi-light)
+      doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font" :size 15))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
@@ -32,7 +32,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'my-dracula)
+(setq doom-theme 'doom-gruvbox)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -75,13 +75,18 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+(defadvice! shut-up-org-problematic-hooks (fn &rest args)
+  :around #'org-fancy-priorities-mode
+  :around #'org-superstar-mode
+  (ignore-errors (apply fn args)))
+
 (setq
     org-superstar-headline-bullets-list '("⁖" "◉" "✸" "○" "✿" )
     )
 
 (setq org-ellipsis " ▼ ")
 
-;;(setq org-fancy-priorities-list '("卑" "" ""))
+(setq org-fancy-priorities-list '("卑" "" ""))
 
 (defun my/org-mode/load-prettify-symbols ()
   (interactive)
@@ -196,12 +201,20 @@
 
 (map! :leader
       :desc "prev node"
-      "n r b" #'org-mark-ring-goto)
+      "B" #'org-mark-ring-goto)
+
+(map! :leader
+      :desc "darkroom"
+      "t d" #'darkroom-tentative-mode)
+
+(add-hook 'darkroom-tentative-mode-hook (lambda () (interactive) (display-line-numbers-mode 'toggle)))
 
 (setq org-journal-date-prefix "#+TITLE: "
       org-journal-time-prefix "* "
       org-journal-date-format "%a, %d-%m-%Y"
       org-journal-file-format "%d-%m-%Y.org")
+
+(setq org-journal-dir "~/Dropbox/Stuff/Orga/Roam/daily")
 
 (setq doom-modeline-icon t)
 (setq doom-modeline-modal-icon t)
@@ -228,50 +241,32 @@
 
 ; TODO: Download Matlab mode via 'M-x' list-packages
  (autoload 'matlab-mode "matlab" "Matlab Editing Mode" t)
+(require 'matlab-load)
  (add-to-list
   'auto-mode-alist
   '("\\.m$" . matlab-mode))
  (setq matlab-indent-function t)
-(setq matlab-shell-command "matlab")
-
+(setq matlab-shell-command "~/MATLAB/bin/matlab")
+(defun my-matlab-hook ()
+   (display-line-numbers-mode 1))
+(add-hook 'matlab-mode-hook 'my-matlab-hook)
 (setq fancy-splash-image "~/Pictures/emacs-logo.png")
 
 
-(setq mini-frame-show-parameters
-        `((left . 0.5)
-          (top . 1.0)
-          (width . 1.0)
-          (height . 5)
-          (left-fringe . 12)
-          (right-fringe .12)
-          (child-frame-border-width . 0)
-          (internal-border-width . 0)))
+;;;;;;; (setq mini-frame-show-parameters
+;;;;;;;         `((left . 0.5)
+;;;;;;;           (top . 1.0)
+;;;;;;;           (width . 1.0)
+;;;;;;;           (height . 5)
+;;;;;;;           (left-fringe . 12)
+;;;;;;;           (right-fringe .12)
+;;;;;;;           (child-frame-border-width . 0)
+;;;;;;;           (internal-border-width . 0)))
 
 
 (require 'svg-lib)
 (require 'svg-tag-mode)
 (require 'color)
-
-(defconst date-re "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
-(defconst time-re "[0-9]\\{2\\}:[0-9]\\{2\\}")
-(defconst day-re "[A-Za-z]\\{3\\}")
-
-(defun svg-progress-percent (value)
-  (svg-image (svg-lib-concat
-              (svg-lib-progress-bar (/ (string-to-number value) 100.0)
-                                nil :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
-              (svg-lib-tag (concat value "%")
-                           nil :stroke 0 :margin 0)) :ascent 'center))
-
-(defun svg-progress-count (value)
-  (let* ((seq (mapcar #'string-to-number (split-string value "/")))
-         (count (float (car seq)))
-         (total (float (cadr seq))))
-  (svg-image (svg-lib-concat
-              (svg-lib-progress-bar (/ count total) nil
-                                    :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
-              (svg-lib-tag value nil
-                           :stroke 0 :margin 0)) :ascent 'center)))
 
 (setq svg-tag-tags '(
                      (":UNI:" . ((lambda (tag) (svg-tag-make "Uni" :face 'shadow))))
@@ -283,7 +278,7 @@
                      (":CODE:" . ((lambda (tag) (svg-tag-make "Code" :face 'match))))
                      (":IMP:" . ((lambda (tag) (svg-tag-make "Important" :inverse t))))
                      (":JP:" . ((lambda (tag) (svg-tag-make "JP" :inverse t :face 'org-headline-todo))))
-                     ("DONE" . ((lambda (tag) (svg-tag-make "DONE" :face 'fringe))))
+                     ;;("DONE" . ((lambda (tag) (svg-tag-make "DONE" :face 'fringe))))
                      ("TODO" . ((lambda (tag) (svg-tag-make "TODO" :inverse t :face 'org-level-1))))
                      ("THNK" . ((lambda (tag) (svg-tag-make "THNK" :inverse t :face 'org-level-1))))
                      ("WORK" . ((lambda (tag) (svg-tag-make "WORK" :inverse t :face 'match))))
@@ -291,39 +286,29 @@
                      ("CURR" . ((lambda (tag) (svg-tag-make "CURR" :face '+org-todo-cancel))))
                      ("PROJ" . ((lambda (tag) (svg-tag-make "PROJ" :inverse t :face '+org-todo-project))))
                      ("\\[#[A-Z]\\]" . ( (lambda (tag) (svg-tag-make tag :inverse t :face '+org-todo-cancel :beg 2 :end -1 :margin 0))))
-                     ;;(,(format "\\(<%s>\\)" date-re) . ((lambda (tag) (svg-tag-make tag :beg 1 :end -1 :margin 0))))
-                     ;;(,(format "\\(<%s *\\)%s>" date-re time-re) . ((lambda (tag) (svg-tag-make tag :beg 1 :inverse nil :crop-right t :margin 0))))
-                     ;;(,(format "<%s *\\(%s>\\)" date-re time-re) . ((lambda (tag) (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0))))
-
                      ))
-                     ;;("\\(\\[[0-9]\\{1,3\\}%\\]\\)" . ((lambda (tag) (svg-progress-percent (substring tag 1 -2)))))
-                     ;;("\\(\\[[0-9]+/[0-9]+\\]\\)" . ((lambda (tag) (svg-progress-count (substring tag 1 -1)))))
-
-                     ;;(,(format "\\(\\[%s\\]\\)" date-re) . ((lambda (tag) (svg-tag-make tag :beg 1 :end -1 :margin 0 :face 'org-date))))
-                     ;;(,(format "\\(\\[%s *\\)%s\\]" date-re time-re) . ((lambda (tag) (svg-tag-make tag :beg 1 :inverse nil :crop-right t :margin 0 :face 'org-date))))
-                     ;;(,(format "\\[%s *\\(%s\\]\\)" date-re time-re) . ((lambda (tag) (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0 :face 'org-date))))
 (add-hook 'org-mode-hook
           #'svg-tag-mode)
 (add-hook 'org-agenda-mode-hook
           #'svg-tag-mode)
 
-(defun doom-dashboard-widget-head-text ()
-  (insert
-   "\n test"
-   (+doom-dashboard--center
-    (- +doom-dashboard--width 2)
+;; (defun doom-dashboard-widget-head-text ()
+;;   (insert
+;;    "\n test"
+;;    (+doom-dashboard--center
+;;     (- +doom-dashboard--width 2)
 
-   "\n")))
+;;    "\n")))
 
-(defvar +doom-dashboard-functions
-  '(doom-dashboard-widget-banner
-    doom-dashboard-widget-head-text
-    doom-dashboard-widget-shortmenu
-    doom-dashboard-widget-loaded
-    doom-dashboard-widget-footer)
-  "List of widget functions to run in the dashboard buffer to construct the
-dashboard. These functions take no arguments and the dashboard buffer is current
-while they run.")
+;; (defvar +doom-dashboard-functions
+;;   '(doom-dashboard-widget-banner
+;;     doom-dashboard-widget-head-text
+;;     doom-dashboard-widget-shortmenu
+;;     doom-dashboard-widget-loaded
+;;     doom-dashboard-widget-footer)
+;;   "List of widget functions to run in the dashboard buffer to construct the
+;; dashboard. These functions take no arguments and the dashboard buffer is current
+;; while they run.")
 
 (after! org
 (setq org-todo-keywords
@@ -360,11 +345,12 @@ while they run.")
           ("HOLD" . +org-todo-onhold)
           ("PROJ" . +org-todo-project)
           ("NO"   . +org-todo-cancel)
-          ("KILL" . +org-todo-cancel))))
+          ("KILL" . +org-todo-cancel)))
+)
 
 
 
-(add-load-path! "~/.doom.d/lisp/setup-splash.el")
+;; (add-load-path! "~/.doom.d/lisp/setup-splash.el")
 
 (setq org-agenda-custom-commands
       '(
@@ -445,7 +431,8 @@ while they run.")
                      :type entry
                      :template ("* %?"
                                 "%U"))
-                              ))))
+                              )))
+)
 
 (setq display-time-day-and-date t)
 (setq display-time-24hr-format t)
@@ -459,8 +446,8 @@ while they run.")
 (setq lsp-julia-default-environment "~/.julia/environments/v1.7")
 
 (setq org-roam-dailies-capture-templates
-      '(("d" "default" entry "* %<%H:%M>: %?"
-         :if-new (file+head "%<%d-%m-%Y>.org" "#+title: %<%d-%m-%Y>\n")))
+      '(("d" "default" entry "* %<%H:%M> %?"
+         :if-new (file+head "%<%d-%m-%Y>.org" "%<%d-%m-%Y>\n")))
       )
 
 (setq org-roam-capture-templates
@@ -495,3 +482,35 @@ while they run.")
               (yas-activate-extra-mode 'latex-mode)))
 
 (display-time)
+
+(require 'org-modern)
+(setq
+ ;; Edit settings
+ org-auto-align-tags nil
+ org-tags-column 0
+ org-catch-invisible-edits 'show-and-error
+ org-special-ctrl-a/e t
+ org-insert-heading-respect-content t
+
+ ;; Org styling, hide markup etc.
+ org-hide-emphasis-markers t
+ org-pretty-entities t
+ org-ellipsis "…"
+ ;; Agenda styling
+ org-agenda-block-separator ?─
+ org-agenda-time-grid
+ '((daily today require-timed)
+   (800 1000 1200 1400 1600 1800 2000)
+   " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+ org-agenda-current-time-string
+ "<< now ─────────────────────────────────────────────────")
+
+(setq org-modern-block nil)
+(setq org-modern-todo nil)
+(setq org-modern-tag nil)
+(setq org-modern-priority nil)
+
+;; (global-org-modern-mode)
+(add-hook 'org-mode-hook #'org-modern-mode)
+(add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
+(set-register ?m (cons 'file "~/Dropbox/Stuff/Orga/Main.org"))

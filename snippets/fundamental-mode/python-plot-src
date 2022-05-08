@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: python-plot-src
+# key: <pp
+# --
+
+#+begin_src python :results file :var fig="${1:title}"
+import matplotlib
+import matplotlib.pyplot as plt
+plt.figure(figsize=(3,2))
+${2:Code}
+plt.savefig(fig)
+return fig
+#+end_src
