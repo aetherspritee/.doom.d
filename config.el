@@ -177,7 +177,7 @@
 
 (map! :leader
       :desc "Dashboard"
-      "H" #'dashboard-refresh-buffer)
+      "H" #'+doom-dashboard/open)
 
 (map! :leader
       :desc "Capture"
@@ -206,6 +206,22 @@
 (map! :leader
       :desc "darkroom"
       "t d" #'darkroom-tentative-mode)
+
+(map! :leader
+      :desc "Breakpoint"
+      "D b" #'dap-breakpoint-toggle)
+
+(map! :leader
+      :desc "Start"
+      "D s" #'dap-debug)
+
+(map! :leader
+      :desc "Start"
+      "D n" #'dap-next)
+
+(map! :leader
+      :desc "Eval thing"
+      "D D" #'dap-hydra)
 
 (add-hook 'darkroom-tentative-mode-hook (lambda () (interactive) (display-line-numbers-mode 'toggle)))
 
@@ -514,3 +530,9 @@
 (add-hook 'org-mode-hook #'org-modern-mode)
 (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
 (set-register ?m (cons 'file "~/Dropbox/Stuff/Orga/Main.org"))
+
+(add-to-list 'display-buffer-alist '("^\\*Python\\*$" display-buffer-at-bottom (window-height . 15)))
+
+(add-to-list 'display-buffer-alist '("^\*Python :: Run file \(buffer\)<1> server log\*$" display-buffer-at-bottom (window-height . 15)))
+(add-to-list 'display-buffer-alist '("^\*Python :: Run file \(buffer\) server log\*$" display-buffer-at-bottom (window-height . 15)))
+(setq vterm-shell "/bin/zsh")
