@@ -11,12 +11,22 @@
 (package! svg-tag-mode)
 (package! dap-mode)
 (package! org-modern)
-(package! org-roam-bibtex)
 (package! org-ref)
+(package! org-roam-bibtex
+  :recipe (:host github :repo "org-roam/org-roam-bibtex"))
+(package! notebook-mode
+  :recipe (:host github :repo "rougier/notebook-mode"))
+(unpin! bibtex-completion helm-bibtex ivy-bibtex)
 (package! darkroom)
+(package! mozc)
+(package! mozc-cand-posframe)
+(package! org-noter-pdftools)
 (package! doct
   :recipe (:host github :repo "progfolio/doct")
   :pin "6cf1943ad7")
+
+(package! org-excalidraw
+  :recipe (:host github :repo "wdavew/org-excalidraw"))
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 

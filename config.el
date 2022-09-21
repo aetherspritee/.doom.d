@@ -223,6 +223,27 @@
       :desc "Eval thing"
       "D D" #'dap-hydra)
 
+(map! :leader
+      (:prefix-map ("N" . "Scientific notes")
+       ;;(:prefix ("j" . "journal")
+        :desc "Highlight PDF" "h" #'pdf-annot-add-highlight-markup-annotation
+        :desc "Ivy Bibtex" "i" #'ivy-bibtex
+        :desc "ORB Mode" "o" #'org-roam-bibtex-mode
+        :desc "Show note in PDF" "n" #'org-noter-sync-current-note
+        :desc "Kill noter session" "x" #'org-noter-kill-session
+        ))
+;;)
+
+(defvar ivy-bibtex-extra-keymap
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-SPC") 'ivy-mark)
+    (define-key map (kbd "S-SPC") 'ivy-unmark)
+    (define-key map (kbd "M-e") '(ivy-bibtex-edit-notes (bibtex-completion-key-at-point)))
+    map)
+  "Optional extra keymap for `ivy-bibtex'.")
+
+
+
 (add-hook 'darkroom-tentative-mode-hook (lambda () (interactive) (display-line-numbers-mode 'toggle)))
 
 (setq org-journal-date-prefix "#+TITLE: "
@@ -302,6 +323,11 @@
                      ("CURR" . ((lambda (tag) (svg-tag-make "CURR" :face '+org-todo-cancel))))
                      ("PROJ" . ((lambda (tag) (svg-tag-make "PROJ" :inverse t :face '+org-todo-project))))
                      ("\\[#[A-Z]\\]" . ( (lambda (tag) (svg-tag-make tag :inverse t :face '+org-todo-cancel :beg 2 :end -1 :margin 0))))
+                     (":orange:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'org-code))))
+                     (":yellow:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face '+org-todo-onhold))))
+                     (":red:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face '+org-todo-cancel))))
+                     (":green:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'org-checkbox))))
+                     (":blue:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'dired-special))))
                      ))
 (add-hook 'org-mode-hook
           #'svg-tag-mode)
@@ -412,6 +438,7 @@
         ))
 
 (setq +org-capture-notes-file "inbox.org")
+(setq +org-capture-projects-file "~/Dropbox/Stuff/Orga/projects.org")
 
 (after! org-capture
     (setq org-capture-templates
@@ -477,7 +504,12 @@
       ("u" "uni" plain
        "#+STARTUP: latexpreview\n %?"
        :target (file+head "uni/%<%Y%m%d%H%M%S>-${slug}.org" "${title}\n")
-       :unnarrowed t)))
+       :unnarrowed t)
+      ("n" "ref + noter" plain
+       (file "~/Dropbox/Stuff/Orga/Roam/test/templates/noternotes.org")
+       :target (file+head "~/Dropbox/Stuff/Orga/Roam/notes/${citekey}.org" "#+title: ${title}\n")
+       :unnarrowed t
+       )))
 
 (setq lsp-enable-file-watchers nil)
 (setq org-capture-bookmark nil)
@@ -486,7 +518,7 @@
 (setq bibtex-completion-bibliography
       '("~/Dropbox/Stuff/Orga/Roam/papers/lib.bib"))
 (setq bibtex-completion-library-path '("~/Dropbox/Stuff/Orga/Roam/papers"))
-(setq org-startup-with-latex-preview t)
+;; (setq org-startup-with-latex-preview t)
 (setq org-use-sub-superscripts nil)
 (setq org-pretty-entities nil)
 (setq org-pretty-entities-include-sub-superscripts nil)
@@ -536,3 +568,33 @@
 (add-to-list 'display-buffer-alist '("^\*Python :: Run file \(buffer\)<1> server log\*$" display-buffer-at-bottom (window-height . 15)))
 (add-to-list 'display-buffer-alist '("^\*Python :: Run file \(buffer\) server log\*$" display-buffer-at-bottom (window-height . 15)))
 (setq vterm-shell "/bin/zsh")
+
+ (add-to-list
+  'auto-mode-alist
+  '("\\.py$" . python-mode))
+
+
+(use-package! org-roam-bibtex
+  :after org-roam
+  :config
+  (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
+
+(setq bibtex-completion-notes-path "~/Dropbox/Stuff/Orga/Roam/notes")
+(require 'mozc)
+(setq default-input-method "japanese-mozc")
+;;(setq mozc-candidate-style 'posframe)
+
+;; (setq orb-note-actions-interface 'ivy)
+;; (add-hook 'org-roam-bibtex-mode-hook #'org-roam-bibtex-mode)
+
+;; (add-hook! 'org-roam-bibtex-mode-hook #'org-roam-bibtex-mode)
+(setq org-excalidraw-directory "~/Dropbox/Stuff/Orga/Scratchpad")
+(setq org-noter-always-create-frame nil)
+;; (require 'dap-python)
+;;
+(after! dap-mode (setq dap-python-debugger 'debugpy))
+
+(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+
+(lsp-headerline-breadcrumb-mode 1)
+(setq doom-themes-treemacs-theme "doom-colors")
