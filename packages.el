@@ -27,6 +27,10 @@
 
 (package! org-excalidraw
   :recipe (:host github :repo "wdavew/org-excalidraw"))
+
+
+;; (unpin! org-roam)
+;; (package! org-roam-ui)
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 
