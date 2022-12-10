@@ -17,10 +17,14 @@
 (package! notebook-mode
   :recipe (:host github :repo "rougier/notebook-mode"))
 (unpin! bibtex-completion helm-bibtex ivy-bibtex)
+(package! company-posframe)
 (package! darkroom)
 (package! mozc)
 (package! mozc-cand-posframe)
 (package! org-noter-pdftools)
+(package! ewal)
+(package! ewal-doom-themes)
+(package! ewal-evil-cursors)
 (package! doct
   :recipe (:host github :repo "progfolio/doct")
   :pin "6cf1943ad7")

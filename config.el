@@ -21,9 +21,11 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
+;; (setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 12.0 :weight 'semi-light)
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 12.0 :weight 'semi-light)
-      doom-variable-pitch-font (font-spec :family "Iosevka Oblique" :size 15 :weight 'bold)
-      doom-big-font (font-spec :family "Iosevka Oblique" :size 15 :weight 'bold))
+      doom-variable-pitch-font (font-spec :family "CaskaydiaCove Nerd Font" :size 12.0 :weight 'semi-light)
+      doom-big-font (font-spec :family "CaskaydiaCove Nerd Font" :size 12.0 :weight 'semi-light)
+      )
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
@@ -232,6 +234,7 @@
         :desc "ORB Mode" "o" #'org-roam-bibtex-mode
         :desc "Show note in PDF" "n" #'org-noter-sync-current-note
         :desc "Kill noter session" "x" #'org-noter-kill-session
+        :desc "Invert PDF color" "r" #'pdf-view-themed-minor-mode
         ))
 ;;)
 
@@ -288,7 +291,7 @@
 (defun my-matlab-hook ()
    (display-line-numbers-mode 1))
 (add-hook 'matlab-mode-hook 'my-matlab-hook)
-(setq fancy-splash-image "~/Pictures/emacs-logo.png")
+(setq fancy-splash-image "~/Dropbox/Wallpapers/pfp/favpic.jpg")
 
 
 ;;;;;;; (setq mini-frame-show-parameters
@@ -508,13 +511,13 @@
        :unnarrowed t)
       ("n" "ref + noter" plain
        (file "~/Dropbox/Stuff/Orga/Roam/test/templates/noternotes.org")
-       :target (file+head "~/Dropbox/Stuff/Orga/Roam/notes/${citekey}.org" "#+title: ${title}\n")
+       :target (file+head "~/Dropbox/Stuff/Orga/Roam/notes/${citekey}.org" "#+title: ${citekey}\n* ${title}\n")
        :unnarrowed t
        )
-      ;; ("l" "lotr" plain
-      ;;  "\n *%?"
-      ;;  :if-new (file+head "~/Dropbox/Stuff/Orga/Roam/Lord of the Rings/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-      ;;  :unnarrowed t)
+      ("l" "lotr" plain
+       "\n\n* Summary\n%?"
+       :if-new (file+head "~/Dropbox/Stuff/Orga/Roam/Lord of the Rings/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+       :unnarrowed t)
       ))
 
 
@@ -574,7 +577,7 @@
 
 (add-to-list 'display-buffer-alist '("^\*Python :: Run file \(buffer\)<1> server log\*$" display-buffer-at-bottom (window-height . 15)))
 (add-to-list 'display-buffer-alist '("^\*Python :: Run file \(buffer\) server log\*$" display-buffer-at-bottom (window-height . 15)))
-(setq vterm-shell "/bin/zsh")
+(setq vterm-shell "/bin/bash")
 
  (add-to-list
   'auto-mode-alist
@@ -641,17 +644,40 @@
 (setq-default TeX-engine 'xetex)
 (setq-default TeX-PDF-mode t)
 
-(use-package! websocket
-    :after org-roam)
+;; (use-package! websocket
+;;     :after org-roam)
 
-(use-package! org-roam-ui
-    :after org-roam ;; or :after org
-;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-;;         a hookable mode anymore, you're advised to pick something yourself
-;;         if you don't care about startup time, use
-;;  :hook (after-init . org-roam-ui-mode)
-    :config
-    (setq org-roam-ui-sync-theme t
-          org-roam-ui-follow t
-          org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start t))
+;; (use-package! org-roam-ui
+;;     :after org-roam ;; or :after org
+;; ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;; ;;         a hookable mode anymore, you're advised to pick something yourself
+;; ;;         if you don't care about startup time, use
+;; ;;  :hook (after-init . org-roam-ui-mode)
+;;     :config
+;;     (setq org-roam-ui-sync-theme t
+;;           org-roam-ui-follow t
+;;           org-roam-ui-update-on-save t
+;;           org-roam-ui-open-on-start t))
+
+(company-posframe-mode 1)
+(after! org-noter
+  (setq org-noter-doc-split-fraction '(0.65 . 0.35)))
+(make-face-unbold 'tree-sitter-hl-face:function.call)
+;; (make-face-unbold 'highlight-numbers-number)
+
+;; PYWAL THEME
+;; (setq ewal-use-built-in-always-p nil
+;;       ewal-use-built-in-on-failure-p t
+;;       ewal-built-in-palette "sexy-material")
+
+;; (progn (show-paren-mode +1)
+;;        (global-hl-line-mode)
+;;        (load-theme 'ewal-doom-one t)
+;;        (enable-theme 'ewal-doom-one))
+
+;; (after! ewal-doom-themes
+;;   (ewal-evil-cursors-get-colors :apply t)
+;;   (setq ewal-doom-one-brighter-modeline t)
+;;   )
+
+(setq +evil-want-o/O-to-continue-comments nil)
