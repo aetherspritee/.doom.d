@@ -25,12 +25,17 @@
 (package! ewal)
 (package! ewal-doom-themes)
 (package! ewal-evil-cursors)
+(package! leetcode)
+(package! shrface)
+(package! fixmee)
 (package! doct
   :recipe (:host github :repo "progfolio/doct")
   :pin "6cf1943ad7")
 
 (package! org-excalidraw
   :recipe (:host github :repo "wdavew/org-excalidraw"))
+(package! doom-todo-ivy
+  :recipe (:host github :repo "jsmestad/doom-todo-ivy"))
 
 
 ;; (unpin! org-roam)

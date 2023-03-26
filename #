@@ -35,8 +35,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-;; (setq doom-theme 'doom-gruvbox)
-(setq doom-theme 'doom-tomorrow-night)
+(setq doom-theme 'doom-gruvbox)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -316,34 +315,34 @@
 (require 'svg-tag-mode)
 (require 'color)
 
-;; (setq svg-tag-tags '(
-;;                      (":UNI:" . ((lambda (tag) (svg-tag-make "Uni" :face 'shadow))))
-;;                      (":IMPROV:" . ((lambda (tag) (svg-tag-make "Improv"))))
-;;                      (":PROD:" . ((lambda (tag) (svg-tag-make "Prod"))))
-;;                      ("HOLD" . ((lambda (tag) (svg-tag-make "HOLD" :face 'transient-pink))))
-;;                      ("STRT" . ((lambda (tag) (svg-tag-make "START" :inverse t :face '+org-todo-cancel))))
-;;                      (":FUN:" . ((lambda (tag) (svg-tag-make "Fun" :face 'warning))))
-;;                      (":CODE:" . ((lambda (tag) (svg-tag-make "Code" :face 'match))))
-;;                      (":IMP:" . ((lambda (tag) (svg-tag-make "Important" :inverse t))))
-;;                      (":JP:" . ((lambda (tag) (svg-tag-make "JP" :inverse t :face 'org-headline-todo))))
-;;                      ;;("DONE" . ((lambda (tag) (svg-tag-make "DONE" :face 'fringe))))
-;;                      ("TODO" . ((lambda (tag) (svg-tag-make "TODO" :inverse t :face 'org-level-1))))
-;;                      ("THNK" . ((lambda (tag) (svg-tag-make "THNK" :inverse t :face 'org-level-1))))
-;;                      ("WORK" . ((lambda (tag) (svg-tag-make "WORK" :inverse t :face 'match))))
-;;                      ("PRCS" . ((lambda (tag) (svg-tag-make "PRCS" :inverse t :face 'warning))))
-;;                      ("CURR" . ((lambda (tag) (svg-tag-make "CURR" :face '+org-todo-cancel))))
-;;                      ("PROJ" . ((lambda (tag) (svg-tag-make "PROJ" :inverse t :face '+org-todo-project))))
-;;                      ("\\[#[A-Z]\\]" . ( (lambda (tag) (svg-tag-make tag :inverse t :face '+org-todo-cancel :beg 2 :end -1 :margin 0))))
-;;                      (":orange:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'org-code))))
-;;                      (":yellow:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face '+org-todo-onhold))))
-;;                      (":red:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face '+org-todo-cancel))))
-;;                      (":green:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'org-checkbox))))
-;;                      (":blue:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'dired-special))))
-;;                      ))
-;; (add-hook 'org-mode-hook
-;;           #'svg-tag-mode)
-;; (add-hook 'org-agenda-mode-hook
-;;           #'svg-tag-mode)
+(setq svg-tag-tags '(
+                     (":UNI:" . ((lambda (tag) (svg-tag-make "Uni" :face 'shadow))))
+                     (":IMPROV:" . ((lambda (tag) (svg-tag-make "Improv"))))
+                     (":PROD:" . ((lambda (tag) (svg-tag-make "Prod"))))
+                     ("HOLD" . ((lambda (tag) (svg-tag-make "HOLD" :face 'transient-pink))))
+                     ("STRT" . ((lambda (tag) (svg-tag-make "START" :inverse t :face '+org-todo-cancel))))
+                     (":FUN:" . ((lambda (tag) (svg-tag-make "Fun" :face 'warning))))
+                     (":CODE:" . ((lambda (tag) (svg-tag-make "Code" :face 'match))))
+                     (":IMP:" . ((lambda (tag) (svg-tag-make "Important" :inverse t))))
+                     (":JP:" . ((lambda (tag) (svg-tag-make "JP" :inverse t :face 'org-headline-todo))))
+                     ;;("DONE" . ((lambda (tag) (svg-tag-make "DONE" :face 'fringe))))
+                     ("TODO" . ((lambda (tag) (svg-tag-make "TODO" :inverse t :face 'org-level-1))))
+                     ("THNK" . ((lambda (tag) (svg-tag-make "THNK" :inverse t :face 'org-level-1))))
+                     ("WORK" . ((lambda (tag) (svg-tag-make "WORK" :inverse t :face 'match))))
+                     ("PRCS" . ((lambda (tag) (svg-tag-make "PRCS" :inverse t :face 'warning))))
+                     ("CURR" . ((lambda (tag) (svg-tag-make "CURR" :face '+org-todo-cancel))))
+                     ("PROJ" . ((lambda (tag) (svg-tag-make "PROJ" :inverse t :face '+org-todo-project))))
+                     ("\\[#[A-Z]\\]" . ( (lambda (tag) (svg-tag-make tag :inverse t :face '+org-todo-cancel :beg 2 :end -1 :margin 0))))
+                     (":orange:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'org-code))))
+                     (":yellow:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face '+org-todo-onhold))))
+                     (":red:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face '+org-todo-cancel))))
+                     (":green:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'org-checkbox))))
+                     (":blue:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'dired-special))))
+                     ))
+(add-hook 'org-mode-hook
+          #'svg-tag-mode)
+(add-hook 'org-agenda-mode-hook
+          #'svg-tag-mode)
 
 ;; (defun doom-dashboard-widget-head-text ()
 ;;   (insert
@@ -510,8 +509,8 @@
                 lsp-folding-range-limit 100)))
 
 (setq org-roam-dailies-capture-templates
-      '(("d" "default" entry "* Thought of the week\n %?\n* Review \n\n* What to keep up\n\n* What to improve\n\n* Vibes/Mood/Interest"
-         :if-new (file+head "weekly-%<%d-%m-%Y>.org" "#+title: %<%d-%m-%Y>\n")))
+      '(("d" "default" entry "* %<%H:%M> %?"
+         :if-new (file+head "%<%d-%m-%Y>.org" "%<%d-%m-%Y>\n")))
       )
 
 (setq org-roam-capture-templates
@@ -580,10 +579,10 @@
  org-agenda-current-time-string
  "<< now ─────────────────────────────────────────────────")
 
-;; (setq org-modern-block nil)
-;; (setq org-modern-todo nil)
-;; (setq org-modern-tag nil)
-;; (setq org-modern-priority nil)
+(setq org-modern-block nil)
+(setq org-modern-todo nil)
+(setq org-modern-tag nil)
+(setq org-modern-priority nil)
 
 ;; (global-org-modern-mode)
 (add-hook 'org-mode-hook #'org-modern-mode)
@@ -715,4 +714,4 @@
 (setq my/org-latex-scale 2)
 (setq org-format-latex-options (plist-put org-format-latex-options :scale my/org-latex-scale))
 
-(require 'quarto-mode)
+(require quatro-mode)
