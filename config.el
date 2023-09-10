@@ -22,9 +22,9 @@
 ;; accept. For example:
 ;;
 ;; (setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 12.0 :weight 'semi-light)
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 12.0 :weight 'semi-light)
-      doom-variable-pitch-font (font-spec :family "Source Sans Pro" :size 12.0 :weight 'semi-light)
-      doom-big-font (font-spec :family "CaskaydiaCove Nerd Font" :size 12.0 :weight 'semi-light)
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 11.0 :weight 'semi-light)
+      doom-variable-pitch-font (font-spec :family "Source Sans Pro" :size 11.0 :weight 'semi-light)
+      doom-big-font (font-spec :family "CaskaydiaCove Nerd Font" :size 11.0 :weight 'semi-light)
       )
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
@@ -35,8 +35,9 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
+
 ;; (setq doom-theme 'doom-gruvbox)
-(setq doom-theme 'doom-tomorrow-night)
+(setq doom-theme 'doom-gruvbox)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
