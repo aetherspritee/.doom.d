@@ -36,6 +36,8 @@
   :recipe (:host github :repo "wdavew/org-excalidraw"))
 (package! doom-todo-ivy
   :recipe (:host github :repo "jsmestad/doom-todo-ivy"))
+(package! org-timeblock
+  :recipe (:host github :repo "ichernyshovvv/org-timeblock"))
 
 
 ;; (unpin! org-roam)
