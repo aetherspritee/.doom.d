@@ -1,4 +1,0 @@
-* PROJ Code [0/3]
-+ [ ] Backend
-+ [ ] Frontend
-+ [ ] Debugging
