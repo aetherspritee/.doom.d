@@ -994,3 +994,5 @@
 (map! :leader "7" 'harpoon-go-to-7)
 (map! :leader "8" 'harpoon-go-to-8)
 (map! :leader "9" 'harpoon-go-to-9)
+
+(setq bibtex-completion-additional-search-fields '(tags))
