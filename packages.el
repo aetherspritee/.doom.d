@@ -28,6 +28,7 @@
 (package! leetcode)
 (package! shrface)
 (package! fixmee)
+(package! harpoon)
 (package! doct
   :recipe (:host github :repo "progfolio/doct")
   :pin "6cf1943ad7")
