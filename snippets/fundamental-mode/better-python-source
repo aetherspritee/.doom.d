@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: better-python-source
+# key: <p
+# --
+#+begin_src python :results output
+${1:code}
+#+end_src
