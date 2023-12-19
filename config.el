@@ -547,7 +547,7 @@
          :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
          :unnarrowed t)
       ("m" "master" plain (file "~/Roam/test/templates/stuff.org")
-         :target (file+head "master/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+         :target (file+head "master/%<%Y%m%d%H%M%S>-${citekey}.org" "#+title: ${citekey}\n#+description: ${title}\n")
          :unnarrowed t)
       ("u" "uni" plain
        "#+STARTUP: latexpreview\n %?"
@@ -648,10 +648,10 @@
   (set-face-attribute 'org-level-6 nil
                       :weight 'normal)
   (set-face-attribute 'org-meta-line nil
-                      :height 0.3
+                      :height 0.8
                       :weight 'light)
   (set-face-attribute 'org-document-info-keyword nil
-                      :height 0.3
+                      :height 0.8
                       :weight 'light)
   )
 
@@ -949,9 +949,9 @@
 
 (defun my/bibtex-completion-format-citation-org-cite (keys)
   "Format org-links using Org mode's own cite syntax."
-  (format "cite:%s"
-    (s-join ";"
-            (--map (format "%s" it) keys))))
+  (format "[[cite:%1s][%2s]]"  (s-join ";"(--map (format "%s" it) keys )) (s-join ";" (--map (format "%s" it) keys))))
+    ;; (s-join ";"
+    ;;         (--map (format "%s" it) keys))))
 
 
 (setq bibtex-completion-format-citation-functions
