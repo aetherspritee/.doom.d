@@ -39,6 +39,7 @@
   :recipe (:host github :repo "jsmestad/doom-todo-ivy"))
 (package! org-timeblock
   :recipe (:host github :repo "ichernyshovvv/org-timeblock"))
+(package! org-roam-ui)
 
 
 ;; (unpin! org-roam)
