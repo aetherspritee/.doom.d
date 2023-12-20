@@ -1014,3 +1014,5 @@
           org-roam-ui-follow t
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
+
+(setq org-roam-bibtex-mode t)
