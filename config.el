@@ -1017,3 +1017,4 @@
           org-roam-ui-open-on-start t))
 
 (setq org-roam-bibtex-mode t)
+(add-to-list 'magit-section-initial-visibility-alist (cons 'org-roam-node-section 'hide))
