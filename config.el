@@ -267,6 +267,7 @@
         :desc "Show note in PDF" "n" #'org-noter-sync-current-note
         :desc "Kill noter session" "x" #'org-noter-kill-session
         :desc "Invert PDF color" "r" #'pdf-view-themed-minor-mode
+        :desc "Insert Bibtex from DOI" "r" #'doi-insert-bibtex
         ))
 
 (map! :leader
@@ -548,7 +549,7 @@
          :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
          :unnarrowed t)
       ("m" "master" plain (file "~/Roam/test/templates/stuff.org")
-         :target (file+head "master/%<%Y%m%d%H%M%S>-${citekey}.org" "#+title: ${citekey}\n#+description: ${title}\n")
+         :target (file+head "master/%<%Y%m%d%H%M%S>-${citekey}.org" "#+title: ${citekey}\n#+description: ${title}\n#+filetags: :uni:MA:\n\n* Summary\n\n* Further Reading")
          :unnarrowed t)
       ("u" "uni" plain
        "#+STARTUP: latexpreview\n %?"
