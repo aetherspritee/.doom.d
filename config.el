@@ -608,7 +608,7 @@
 ;; LSP and DAP stuff
 ;; (require 'dap-python)
 (setq lsp-enable-file-watchers nil)
-(lsp-headerline-breadcrumb-mode 1)
+(setq lsp-headerline-breadcrumb-enable t)
 (after! dap-mode (setq dap-python-debugger 'debugpy))
 
 ;; (setq lsp-julia-package-dir nil)
