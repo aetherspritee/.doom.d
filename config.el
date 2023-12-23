@@ -22,9 +22,9 @@
 ;; accept. For example:
 ;;
 ;; (setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 12.0 :weight 'semi-light)
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 11.0 :weight 'semi-light)
-      doom-variable-pitch-font (font-spec :family "Source Sans Pro" :size 11.0 :weight 'semi-light)
-      doom-big-font (font-spec :family "CaskaydiaCove Nerd Font" :size 11.0 :weight 'semi-light)
+(setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 12.0 :weight 'semi-light)
+      doom-variable-pitch-font (font-spec :family "Tahoma" :size 12.0 :weight 'semi-light)
+      doom-big-font (font-spec :family "CaskaydiaCove Nerd Font" :size 12.0 :weight 'semi-light)
       )
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
@@ -35,9 +35,8 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-
 ;; (setq doom-theme 'doom-gruvbox)
-(setq doom-theme 'doom-gruvbox)
+(setq doom-theme 'doom-one-light)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -45,7 +44,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Dropbox/Stuff/Orga/")
+(setq org-directory "~/Dropbox/Orga/")
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -79,6 +78,9 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+
+
 
 (defadvice! shut-up-org-problematic-hooks (fn &rest args)
   :around #'org-fancy-priorities-mode
@@ -128,7 +130,7 @@
 (add-hook! 'org-mode-hook
            #'my/org-mode/load-prettify-symbols )
 
-(setq org-image-actual-width nil)
+;;(setq org-image-actual-width nil)
 
 ;;(define-globalized-minor-mode global-rainbow-mode rainbow-mode
 ;;  (lambda () (rainbow-mode 1)))
@@ -229,14 +231,43 @@
       "D D" #'dap-hydra)
 
 (map! :leader
+      :desc "Harpoon Hydra"
+      "K" #'harpoon-quick-menu-hydra)
+
+(define-key evil-normal-state-map (kbd "tf") (lambda () (interactive) (+goto-function.outer)))
+(define-key evil-normal-state-map (kbd "tF") (lambda () (interactive) (+goto-previous-function.outer)))
+(define-key evil-normal-state-map (kbd "tc") (lambda () (interactive) (+goto-class.outer)))
+(define-key evil-normal-state-map (kbd "tC") (lambda () (interactive) (+goto-previous-class.outer)))
+(define-key evil-normal-state-map (kbd "tl") (lambda () (interactive) (+goto-loop.outer)))
+(define-key evil-normal-state-map (kbd "tL") (lambda () (interactive) (+goto-previous-loop.outer)))
+(define-key evil-normal-state-map (kbd "ti") (lambda () (interactive) (+goto-conditional.outer)))
+(define-key evil-normal-state-map (kbd "tI") (lambda () (interactive) (+goto-previous-conditional.outer)))
+(define-key evil-normal-state-map (kbd "ta") (lambda () (interactive) (+goto-parameter.outer)))
+(define-key evil-normal-state-map (kbd "tA") (lambda () (interactive) (+goto-previous-parameter.outer)))
+(define-key evil-visual-state-map (kbd "tf") (lambda () (interactive) (+goto-function.outer)))
+(define-key evil-visual-state-map (kbd "tF") (lambda () (interactive) (+goto-previous-function.outer)))
+(define-key evil-visual-state-map (kbd "tc") (lambda () (interactive) (+goto-class.outer)))
+(define-key evil-visual-state-map (kbd "tC") (lambda () (interactive) (+goto-previous-class.outer)))
+(define-key evil-visual-state-map (kbd "tl") (lambda () (interactive) (+goto-loop.outer)))
+(define-key evil-visual-state-map (kbd "tL") (lambda () (interactive) (+goto-previous-loop.outer)))
+(define-key evil-visual-state-map (kbd "ti") (lambda () (interactive) (+goto-conditional.outer)))
+(define-key evil-visual-state-map (kbd "tI") (lambda () (interactive) (+goto-previous-conditional.outer)))
+(define-key evil-visual-state-map (kbd "ta") (lambda () (interactive) (+goto-parameter.outer)))
+(define-key evil-visual-state-map (kbd "tA") (lambda () (interactive) (+goto-previous-parameter.outer)))
+
+
+(map! :leader
       (:prefix-map ("N" . "Scientific notes")
        ;;(:prefix ("j" . "journal")
+        :desc "insert note" "c" #'orb-insert-link
         :desc "Highlight PDF" "h" #'pdf-annot-add-highlight-markup-annotation
         :desc "Ivy Bibtex" "i" #'ivy-bibtex
         :desc "ORB Mode" "o" #'org-roam-bibtex-mode
+        :desc "Show PDF for current note" "p" #'orb-note-actions
         :desc "Show note in PDF" "n" #'org-noter-sync-current-note
         :desc "Kill noter session" "x" #'org-noter-kill-session
         :desc "Invert PDF color" "r" #'pdf-view-themed-minor-mode
+        :desc "Insert Bibtex from DOI" "r" #'doi-insert-bibtex
         ))
 
 (map! :leader
@@ -263,7 +294,7 @@
       org-journal-date-format "%a, %d-%m-%Y"
       org-journal-file-format "%d-%m-%Y.org")
 
-(setq org-journal-dir "~/Dropbox/Stuff/Orga/Roam/daily")
+(setq org-journal-dir "~/Roam/daily")
 
 (setq doom-modeline-icon t)
 (setq doom-modeline-modal-icon t)
@@ -271,7 +302,7 @@
 (setq doom-modeline-major-mode-color-icon t)
 (setq doom-modeline-persp-name t)
 
-(setq org-roam-directory "~/Dropbox/Stuff/Orga/Roam")
+(setq org-roam-directory "~/Roam")
 
 
 (global-tree-sitter-mode)
@@ -284,22 +315,22 @@
       ("<Right>" hydra-move-splitter-right)
       ("<Left>" hydra-move-splitter-left))
 
-(after! all-the-icons
-  (setcdr (assoc "m" all-the-icons-extension-icon-alist)
-          (cdr (assoc "matlab" all-the-icons-extension-icon-alist))))
+;;(after! all-the-icons
+;;  (setcdr (assoc "m" all-the-icons-extension-icon-alist)
+;;  (cdr (assoc "matlab" all-the-icons-extension-icon-alist))))
 
 ; TODO: Download Matlab mode via 'M-x' list-packages
- (autoload 'matlab-mode "matlab" "Matlab Editing Mode" t)
+;; (autoload 'matlab-mode "matlab" "Matlab Editing Mode" t)
 ;; (require 'matlab-load)
- (add-to-list
-  'auto-mode-alist
-  '("\\.m$" . matlab-mode))
- (setq matlab-indent-function t)
-(setq matlab-shell-command "~/MATLAB/bin/matlab")
-(defun my-matlab-hook ()
-   (display-line-numbers-mode 1))
-(add-hook 'matlab-mode-hook 'my-matlab-hook)
-(setq fancy-splash-image "~/Dropbox/gnu.svg")
+;; (add-to-list
+;; 'auto-mode-alist
+;; '("\\.m$" . matlab-mode))
+;; (setq matlab-indent-function t)
+;;(setq matlab-shell-command "~/MATLAB/bin/matlab")
+;;(defun my-matlab-hook ()
+;;   (display-line-numbers-mode 1))
+;;(add-hook 'matlab-mode-hook 'my-matlab-hook)
+(setq fancy-splash-image "~/Stuff/gnu.svg")
 
 
 ;;;;;;; (setq mini-frame-show-parameters
@@ -313,34 +344,34 @@
 ;;;;;;;           (internal-border-width . 0)))
 
 
-(require 'svg-lib)
-(require 'svg-tag-mode)
-(require 'color)
+;; (require 'svg-lib)
+;; (require 'svg-tag-mode)
+;; (require 'color)
 
 ;; (setq svg-tag-tags '(
-;;                      (":UNI:" . ((lambda (tag) (svg-tag-make "Uni" :face 'shadow))))
-;;                      (":IMPROV:" . ((lambda (tag) (svg-tag-make "Improv"))))
-;;                      (":PROD:" . ((lambda (tag) (svg-tag-make "Prod"))))
-;;                      ("HOLD" . ((lambda (tag) (svg-tag-make "HOLD" :face 'transient-pink))))
-;;                      ("STRT" . ((lambda (tag) (svg-tag-make "START" :inverse t :face '+org-todo-cancel))))
-;;                      (":FUN:" . ((lambda (tag) (svg-tag-make "Fun" :face 'warning))))
+;;                       (":UNI:" . ((lambda (tag) (svg-tag-make "Uni" :face 'shadow))))
+;;                       (":IMPROV:" . ((lambda (tag) (svg-tag-make "Improv"))))
+;;                       (":PROD:" . ((lambda (tag) (svg-tag-make "Prod"))))
+;;                       ("HOLD" . ((lambda (tag) (svg-tag-make "HOLD" :face 'transient-pink))))
+;;                       ("STRT" . ((lambda (tag) (svg-tag-make "START" :inverse t :face '+org-todo-cancel))))
+;;                       (":FUN:" . ((lambda (tag) (svg-tag-make "Fun" :face 'warning))))
 ;;                      (":CODE:" . ((lambda (tag) (svg-tag-make "Code" :face 'match))))
-;;                      (":IMP:" . ((lambda (tag) (svg-tag-make "Important" :inverse t))))
-;;                      (":JP:" . ((lambda (tag) (svg-tag-make "JP" :inverse t :face 'org-headline-todo))))
-;;                      ;;("DONE" . ((lambda (tag) (svg-tag-make "DONE" :face 'fringe))))
-;;                      ("TODO" . ((lambda (tag) (svg-tag-make "TODO" :inverse t :face 'org-level-1))))
-;;                      ("THNK" . ((lambda (tag) (svg-tag-make "THNK" :inverse t :face 'org-level-1))))
-;;                      ("WORK" . ((lambda (tag) (svg-tag-make "WORK" :inverse t :face 'match))))
-;;                      ("PRCS" . ((lambda (tag) (svg-tag-make "PRCS" :inverse t :face 'warning))))
-;;                      ("CURR" . ((lambda (tag) (svg-tag-make "CURR" :face '+org-todo-cancel))))
-;;                      ("PROJ" . ((lambda (tag) (svg-tag-make "PROJ" :inverse t :face '+org-todo-project))))
-;;                      ("\\[#[A-Z]\\]" . ( (lambda (tag) (svg-tag-make tag :inverse t :face '+org-todo-cancel :beg 2 :end -1 :margin 0))))
-;;                      (":orange:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'org-code))))
-;;                      (":yellow:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face '+org-todo-onhold))))
-;;                      (":red:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face '+org-todo-cancel))))
-;;                      (":green:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'org-checkbox))))
-;;                      (":blue:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'dired-special))))
-;;                      ))
+;;                       (":IMP:" . ((lambda (tag) (svg-tag-make "Important" :inverse t))))
+;;                       (":JP:" . ((lambda (tag) (svg-tag-make "JP" :inverse t :face 'org-headline-todo))))
+;;                       ;;("DONE" . ((lambda (tag) (svg-tag-make "DONE" :face 'fringe))))
+;;                       ("TODO" . ((lambda (tag) (svg-tag-make "TODO" :inverse t :face 'org-level-1))))
+;;                       ("THNK" . ((lambda (tag) (svg-tag-make "THNK" :inverse t :face 'org-level-1))))
+;;                       ("WORK" . ((lambda (tag) (svg-tag-make "WORK" :inverse t :face 'match))))
+;;                       ("PRCS" . ((lambda (tag) (svg-tag-make "PRCS" :inverse t :face 'warning))))
+;;                       ("CURR" . ((lambda (tag) (svg-tag-make "CURR" :face '+org-todo-cancel))))
+;;                       ("PROJ" . ((lambda (tag) (svg-tag-make "PROJ" :inverse t :face '+org-todo-project))))
+;;                       ("\\[#[A-Z]\\]" . ( (lambda (tag) (svg-tag-make tag :inverse t :face '+org-todo-cancel :beg 2 :end -1 :margin 0))))
+;;                       (":orange:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'org-code))))
+;;                       (":yellow:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face '+org-todo-onhold))))
+;;                       (":red:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face '+org-todo-cancel))))
+;;                       (":green:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'org-checkbox))))
+;;                       (":blue:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'dired-special))))
+;;                       ))
 ;; (add-hook 'org-mode-hook
 ;;           #'svg-tag-mode)
 ;; (add-hook 'org-agenda-mode-hook
@@ -450,7 +481,7 @@
         ))
 
 (setq +org-capture-notes-file "inbox.org")
-(setq +org-capture-projects-file "~/Dropbox/Stuff/Orga/projects.org")
+(setq +org-capture-projects-file "~/Dropbox/Orga/projects.org")
 
 (after! org-capture
     (setq org-capture-templates
@@ -481,14 +512,14 @@
                    )
                   (, (format "%s\trandom thought" (all-the-icons-material "bubble_chart" :face 'all-the-icons-purple :v-adjust 0.01))
                      :keys "r"
-                     :file "~/Dropbox/Stuff/Orga/Roam/20220306201250-random_thoughts.org"
+                     :file "~/Roam/20220306201250-random_thoughts.org"
                      :prepend t
                      :type entry
                      :template ("* %?"
                                 "%U"))
                   (, (format "%s\tvid list" (all-the-icons-material "bubble_chart" :face 'all-the-icons-purple :v-adjust 0.01))
                      :keys "v"
-                     :file "~/Dropbox/Stuff/Orga/Roam/20220228205355-vidlist.org"
+                     :file "~/Roam/20220228205355-vidlist.org"
                      :prepend t
                      :type entry
                      :template ("* %?")))))
@@ -502,130 +533,90 @@
 ;; (parrot-mode)
 ;; (parrot-set-parrot-type 'science)
 
-(setq lsp-julia-package-dir nil)
-(setq lsp-julia-default-environment "~/.julia/environments/v1.8")
 
-(after! julia-mode
-  (add-hook! 'julia-mode-hook
-    (setq-local lsp-enable-folding t
-                lsp-folding-range-limit 100)))
 
+;; Org Roam Templates
 (setq org-roam-dailies-capture-templates
-      '(("d" "default" entry "* Thought of the week\n %?\n* Review \n\n* What to keep up\n\n* What to improve\n\n* Vibes/Mood/Interest"
-         :if-new (file+head "weekly-%<%d-%m-%Y>.org" "#+title: %<%d-%m-%Y>\n")))
-      )
+      '(("w" "Weekly" entry "* Thought of the week\n %?\n* Review \n\n* What to keep up\n\n* What to improve\n\n* Vibes/Mood/Interest"
+         :if-new (file+head "weekly/weekly-%<%d-%m-%Y>.org" "#+title: Weekly: %<%d-%m-%Y>\n"))
+        ("d" "Daily" entry "* %?" :if-new (file+head  "daily-%<%d-%m-%Y>.org" "#+title: %<%d-%m-%Y>\n"))
+       )
+)
 
 (setq org-roam-capture-templates
       '(("d" "default" plain
          "%?"
          :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
          :unnarrowed t)
-      ("m" "master" plain (file "~/Dropbox/Stuff/Orga/Roam/test/templates/stuff.org")
-         :target (file+head "master/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+      ("m" "master" plain (file "~/Roam/test/templates/stuff.org")
+         :target (file+head "master/%<%Y%m%d%H%M%S>-${citekey}.org" "#+title: ${citekey}\n#+description: ${title}\n#+filetags: :uni:MA:\n\n* Summary\n\n* Further Reading")
          :unnarrowed t)
       ("u" "uni" plain
        "#+STARTUP: latexpreview\n %?"
        :target (file+head "uni/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
        :unnarrowed t)
       ("n" "ref + noter" plain
-       (file "~/Dropbox/Stuff/Orga/Roam/test/templates/noternotes.org")
-       :target (file+head "~/Dropbox/Stuff/Orga/Roam/notes/${citekey}.org" "#+title: ${citekey}\n* ${title}\n")
+       (file "~/Roam/test/templates/noternotes.org")
+       :target (file+head "~/Roam/notes/${citekey}.org" "#+title: ${citekey}\n* ${title}\n")
        :unnarrowed t
        )
       ("l" "lotr" plain
        "\n\n* Summary\n%?"
-       :if-new (file+head "~/Dropbox/Stuff/Orga/Roam/Lord of the Rings/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+       :if-new (file+head "~/Roam/Lord of the Rings/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
        :unnarrowed t)
       ))
 
 
-(setq lsp-enable-file-watchers nil)
 (setq org-capture-bookmark nil)
-(doom-themes-neotree-config)
-(setq doom-themes-neotree-file-icons t)
-(setq bibtex-completion-bibliography
-      '("~/Dropbox/Stuff/Orga/Roam/papers/lib.bib"))
-(setq bibtex-completion-library-path '("~/Dropbox/Stuff/Orga/Roam/papers"))
 ;; (setq org-startup-with-latex-preview t)
-(setq org-use-sub-superscripts nil)
-(setq org-pretty-entities nil)
-(setq org-pretty-entities-include-sub-superscripts nil)
-(setq lsp-julia-package-dir nil)
-(setq lsp-julia-default-environment "~/.julia/environments/v1.7")
 
-(add-hook 'org-mode-hook
-          (λ! (yas-minor-mode)
-              (yas-activate-extra-mode 'latex-mode)))
+(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+
+(setq doom-themes-treemacs-theme "doom-colors")
 
 (display-time)
 
-(require 'org-modern)
-(setq
- ;; Edit settings
- org-auto-align-tags nil
- org-tags-column 0
- org-catch-invisible-edits 'show-and-error
- org-special-ctrl-a/e t
- org-insert-heading-respect-content t
-
- ;; Org styling, hide markup etc.
- org-hide-emphasis-markers t
- org-pretty-entities t
- org-ellipsis "…"
- ;; Agenda styling
- org-agenda-block-separator ?─
- org-agenda-time-grid
- '((daily today require-timed)
-   (800 1000 1200 1400 1600 1800 2000)
-   " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
- org-agenda-current-time-string
- "<< now ─────────────────────────────────────────────────")
-
-;; (setq org-modern-block nil)
-;; (setq org-modern-todo nil)
-;; (setq org-modern-tag nil)
-;; (setq org-modern-priority nil)
-
-;; (global-org-modern-mode)
-(add-hook 'org-mode-hook #'org-modern-mode)
-(add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
-(set-register ?m (cons 'file "~/Dropbox/Stuff/Orga/Main.org"))
+(set-register ?m (cons 'file "~/Dropbox/Orga/Main.org"))
 
 (add-to-list 'display-buffer-alist '("^\\*Python\\*$" display-buffer-at-bottom (window-height . 15)))
-
 (add-to-list 'display-buffer-alist '("^\*Python :: Run file \(buffer\)<1> server log\*$" display-buffer-at-bottom (window-height . 15)))
 (add-to-list 'display-buffer-alist '("^\*Python :: Run file \(buffer\) server log\*$" display-buffer-at-bottom (window-height . 15)))
-(setq vterm-shell "/bin/bash")
 
  (add-to-list
   'auto-mode-alist
   '("\\.py$" . python-mode))
 
 
+;; Japanese input on linux
+(require 'mozc)
+(setq default-input-method "japanese-mozc")
+(setq mozc-candidate-style 'posframe)
+
+;; Org Roam Bibtex Setup, Noter, etc
 (use-package! org-roam-bibtex
   :after org-roam
   :config
   (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
-
-(setq bibtex-completion-notes-path "~/Dropbox/Stuff/Orga/Roam/notes")
-(require 'mozc)
-(setq default-input-method "japanese-mozc")
-;;(setq mozc-candidate-style 'posframe)
-
-;; (setq orb-note-actions-interface 'ivy)
-;; (add-hook 'org-roam-bibtex-mode-hook #'org-roam-bibtex-mode)
-
-;; (add-hook! 'org-roam-bibtex-mode-hook #'org-roam-bibtex-mode)
-(setq org-excalidraw-directory "~/Dropbox/Stuff/Orga/Scratchpad")
+(setq bibtex-completion-notes-path "~/Roam/notes")
+(setq orb-note-actions-interface 'ivy)
+(add-hook 'org-roam-bibtex-mode-hook #'org-roam-bibtex-mode)
+(add-hook! 'org-roam-bibtex-mode-hook #'org-roam-bibtex-mode)
 (setq org-noter-always-create-frame nil)
+(setq bibtex-completion-bibliography
+      '("~/Roam/papers/lib.bib"))
+(setq bibtex-completion-library-path '("~/Roam/papers"))
+
+;; LSP and DAP stuff
 ;; (require 'dap-python)
-;;
+(setq lsp-enable-file-watchers nil)
+(setq lsp-headerline-breadcrumb-enable t)
 (after! dap-mode (setq dap-python-debugger 'debugpy))
 
-(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+;; (setq lsp-julia-package-dir nil)
+;; (setq lsp-julia-default-environment "~/.julia/environments/v1.7")
 
-(lsp-headerline-breadcrumb-mode 1)
-(setq doom-themes-treemacs-theme "doom-colors")
+
+;; Org Mode Visual Tweaks
 (after! org
 (set-face-attribute 'org-document-title nil
                 :background nil
@@ -657,25 +648,192 @@
   (set-face-attribute 'org-level-5 nil
                       :weight 'normal)
   (set-face-attribute 'org-level-6 nil
-                      :weight 'normal))
+                      :weight 'normal)
+  (set-face-attribute 'org-meta-line nil
+                      :height 0.8
+                      :weight 'light)
+  (set-face-attribute 'org-document-info-keyword nil
+                      :height 0.8
+                      :weight 'light)
+  )
 
-(setq-default TeX-engine 'xetex)
-(setq-default TeX-PDF-mode t)
+;; (use-package svg-tag-mode
+;;   :hook ((prog-mode text-mode) . svg-tag-mode)
+;;   :config
+;;   (setq svg-lib-style-default
+;;         (plist-put svg-lib-style-default :font-size 25.5) )
+;; )
 
-;; (use-package! websocket
-;;     :after org-roam)
+;; (defconst date-re "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
+;; (defconst time-re "[0-9]\\{2\\}:[0-9]\\{2\\}")
+;; (defconst day-re "[A-Za-z]\\{3\\}")
+;; (defconst day-time-re (format "\\(%s\\)? ?\\(%s\\)?" day-re time-re))
+;; (defun svg-progress-percent (value)
+;;     (svg-image (svg-lib-concat
+;;                 (svg-lib-progress-bar (/ (string-to-number value) 100.0)
+;;                                       nil :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
+;;                 (svg-lib-tag (concat value "%")
+;;                              nil :stroke 0 :margin 0)) :ascent 'center))
 
-;; (use-package! org-roam-ui
-;;     :after org-roam ;; or :after org
-;; ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-;; ;;         a hookable mode anymore, you're advised to pick something yourself
-;; ;;         if you don't care about startup time, use
-;; ;;  :hook (after-init . org-roam-ui-mode)
-;;     :config
-;;     (setq org-roam-ui-sync-theme t
-;;           org-roam-ui-follow t
-;;           org-roam-ui-update-on-save t
-;;           org-roam-ui-open-on-start t))
+;; (defun svg-progress-count (value)
+;;     (let* ((seq (mapcar #'string-to-number (split-string value "/")))
+;;            (count (float (car seq)))
+;;            (total (float (cadr seq))))
+;;       (svg-image (svg-lib-concat
+;;                   (svg-lib-progress-bar (/ count total) nil
+;;                                         :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
+;;                   (svg-lib-tag value nil
+;;                                :stroke 0 :margin 0)) :ascent 'center)))
+;; (setq svg-tag-tags
+;;       `(
+;;         ;; Org tags :THIS:
+;;         ;; ("\\(:[A-Za-z0-9]+:\\)"
+;;         ;;  . ((lambda (tag)
+;;         ;;       (svg-tag-make tag :beg 1 :end -1 :inverse t))))
+
+;;                 ("TODO" . ((lambda (tag) (svg-tag-make "TODO" :inverse t :face 'org-level-1))))
+;;         ;; Task priority [#a]
+;;         ("\\[#[a-zA-Z]\\]"
+;;          . ((lambda (tag)
+;;               (svg-tag-make tag :face 'org-priority
+;;                             :beg 2 :end -1 :margin 0 :inverse t))))
+
+;;         ;; Progress [1/3] or [45%]
+;;         ("\\(\\[[0-9]\\{1,3\\}%\\]\\)"
+;;          . ((lambda (tag)
+;;               (svg-progress-percent (substring tag 1 -2)))))
+
+;;         ("\\(\\[[0-9]+/[0-9]+\\]\\)"
+;;          . ((lambda (tag)
+;;               (svg-progress-count (substring tag 1 -1)))))
+
+;;         ;; Specific tags -> allow spaces
+;;         ;; :TODO| Reduce to a more general solution
+;;         ;; :NOTE| Reduce to a more general solution
+;;         ;; :FIXME| There is more regexp
+;;         ;; :HACK| Fix this regexp
+;;         ;; :WARN| This needs to be fixed
+
+;;         ("\\([:]\\{1\\}\\W?\\(?:TODO\\|Todo\\)|.*\\)"
+;;          . ((lambda (tag)
+;;               (svg-tag-make tag :face 'org-code :inverse t :crop-left t :beg 6))))
+
+;;         ("\\([:]\\{1\\}\\W?\\(?:TODO\\|Todo\\)*|\\)"
+;;          . ((lambda (tag)
+;;               (svg-tag-make tag :face 'org-code :inverse nil :margin 0 :crop-right t :beg 1 :end -1))))
+
+;;         ("\\([:]\\{1\\}\\W?\\(?:WARN\\|Warn\\)|.*\\)"
+;;          . ((lambda (tag)
+;;               (svg-tag-make tag :face 'org-priority :inverse t :crop-left t :beg 7))))
+
+;;         ("\\([:]\\{1\\}\\W?\\(?:FIXME\\|Fixme\\)|.*\\)"
+;;          . ((lambda (tag)
+;;               (svg-tag-make tag :face 'org-priority :inverse t :crop-left t :beg 7))))
+
+;;         ("\\([:]\\{1\\}\\W?\\(?:HACK\\|PERF\\|MARK\\|Hack\\)|.*\\)"
+;;          . ((lambda (tag)
+;;               (svg-tag-make tag :face 'org-priority :inverse t :crop-left t :beg 6))))
+
+;;         ("\\([:]\\{1\\}\\W?\\(?:HACK\\|Hack\\|PERF\\|WARN\\|Warn\\|FIXME\\|Fixme\\|MARK\\)*|\\)"
+;;          . ((lambda (tag)
+;;               (svg-tag-make tag :face 'org-priority :inverse nil :margin 0 :crop-right t :beg 1 :end -1))))
+
+;;         ("\\([:]\\{1\\}\\W?\\(?:NOTE\\|Note\\)|.*\\)"
+;;          . ((lambda (tag)
+;;               (svg-tag-make tag :face 'org-cite :inverse t :crop-right t :beg 6))))
+
+;;         ("\\([:]\\{1\\}\\W?\\(?:NOTE\\|Note\\)*|\\)"
+;;          . ((lambda (tag)
+;;               (svg-tag-make tag :face 'org-cite :inverse nil :margin 0 :crop-right t :beg 1 :end -1))))
+
+;;         ;; Org TAGS
+;;         (":TODO:" . ((lambda (tag) (svg-tag-make "TODO" :inverse t :face 'org-todo))))
+;;         (":WIP:" . ((lambda (tag) (svg-tag-make "WIP" :inverse t :face 'org-cite))))
+;;         (":DONE:" . ((lambda (tag) (svg-tag-make "DONE" :inverse t :face 'org-done))))
+;;         (":NOTE:" . ((lambda (tag) (svg-tag-make "NOTE"))))
+;;         ("SCHEDULED:" . ((lambda (tag) (svg-tag-make "SCHEDULED" :inverse t :face 'org-warning))))
+;;         ("DEADLINE:" . ((lambda (tag) (svg-tag-make "DEADLINE" :inverse t :face 'org-priority))))
+;;         ;; ("+BEGIN_SRC" . ((lambda (tag) (svg-tag-make "BEGIN" :inverse t :face 'org-code))))
+;;         ;; ("+END_SRC" . ((lambda (tag) (svg-tag-make "END" :face 'org-code))))
+;;         ;; ("+RESULTS:" . ((lambda (tag) (svg-tag-make "RESULTS" :face 'org-cite-key :underline nil))))
+;;         (":X" . ((lambda (tag) (svg-tag-make "[X]" :inverse t :face 'org-checkbox-statistics-done))))
+;;         (":-" . ((lambda (tag) (svg-tag-make "[-]" :inverse t :face 'org-checkbox))))
+
+;;         ;; Citation of the form [cite:@Knuth:1984]
+;;         ("\\(\\[cite:@[A-Za-z]+:\\)"
+;;          . ((lambda (tag) (svg-tag-make tag :inverse t :beg 7 :end -1 :crop-right t))))
+
+;;         ("\\[cite:@[A-Za-z]+:\\([0-9]+\\]\\)"
+;;          . ((lambda (tag)
+;;               (svg-tag-make tag :end -1 :crop-left t))))
+
+;;           ;;; Works for stuff like :XXX|YYY:
+;;         ("\\(:[A-Z]+\\)\|[a-zA-Z#0-9]+:"
+;;          . ((lambda (tag)
+;;               (svg-tag-make tag :beg 1 :inverse t :margin 0 :crop-right t))))
+
+;;         (":[A-Z]+\\(\|[a-zA-Z#0-9]+:\\)"
+;;          . ((lambda (tag)
+;;               (svg-tag-make tag :beg 1 :end -1 :margin 0 :crop-left t))))
+
+;;         ;; Active date (with or without day name, with or without time) <2023-04-03 Sun 17:45>
+;;         (,(format "\\(<%s>\\)" date-re)
+;;          . ((lambda (tag)
+;;               (svg-tag-make tag :beg 1 :end -1 :margin 0))))
+
+;;         (,(format "\\(<%s \\)%s>" date-re day-time-re)
+;;          . ((lambda (tag)
+;;               (svg-tag-make tag :beg 1 :inverse t :crop-right t :margin 0 :face 'org-agenda-date))))
+
+;;         (,(format "<%s \\(%s>\\)" date-re day-time-re)
+;;          . ((lambda (tag)
+;;               (svg-tag-make tag :end -1 :inverse nil :crop-left t :margin 0 :face 'org-agenda-date))))))
+
+(defun org-agenda-show-svg ()
+    (let* ((case-fold-search nil)
+           (keywords (mapcar #'svg-tag--build-keywords svg-tag--active-tags))
+           (keyword (car keywords)))
+      (while keyword
+        (save-excursion
+          (while (re-search-forward (nth 0 keyword) nil t)
+            (overlay-put (make-overlay
+                          (match-beginning 0) (match-end 0))
+                         'display  (nth 3 (eval (nth 2 keyword)))) ))
+        (pop keywords)
+        (setq keyword (car keywords)))))
+  (add-hook 'org-agenda-finalize-hook #'org-agenda-show-svg)
+
+
+;; Org Modern
+(require 'org-modern)
+(setq
+ org-auto-align-tags nil
+ org-tags-column 0
+ org-catch-invisible-edits 'show-and-error
+ org-special-ctrl-a/e t
+ org-insert-heading-respect-content t
+
+ org-hide-emphasis-markers t
+ org-pretty-entities t
+ org-ellipsis "…"
+
+ org-agenda-block-separator ?─
+ org-agenda-time-grid
+ '((daily today require-timed)
+   (800 1000 1200 1400 1600 1800 2000)
+   " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+ org-agenda-current-time-string
+ "<< now ─────────────────────────────────────────────────")
+
+;; (setq org-modern-block nil)
+;; (setq org-modern-todo nil)
+;; (setq org-modern-tag nil)
+;; (setq org-modern-priority nil)
+
+;; (global-org-modern-mode)
+(add-hook 'org-mode-hook #'org-modern-mode)
+(add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
+
 
 (company-posframe-mode 1)
 (after! org-noter
@@ -683,37 +841,180 @@
 (make-face-unbold 'tree-sitter-hl-face:function.call)
 ;; (make-face-unbold 'highlight-numbers-number)
 
-;; PYWAL THEME
-;; (setq ewal-use-built-in-always-p nil
-;;       ewal-use-built-in-on-failure-p t
-;;       ewal-built-in-palette "sexy-material")
-
-;; (progn (show-paren-mode +1)
-;;        (global-hl-line-mode)
-;;        (load-theme 'ewal-doom-one t)
-;;        (enable-theme 'ewal-doom-one))
-
-;; (after! ewal-doom-themes
-;;   (ewal-evil-cursors-get-colors :apply t)
-;;   (setq ewal-doom-one-brighter-modeline t)
-;;   )
-
 (setq +evil-want-o/O-to-continue-comments nil)
-(add-to-list 'exec-path "/home/yulivee/.local/share/go/bin")
+
+;; had some issues with go lsp on linux
+;; (add-to-list 'exec-path "/home/yulivee/.local/share/go/bin")
 
 (add-hook 'python-mode-hook
           (lambda ()
             (set (make-local-variable 'compile-command)
                  (concat "python " buffer-file-name))))
 
-(add-hook 'go-mode-hook
-          (lambda ()
-            (set (make-local-variable 'compile-command)
-                 (concat "go run " buffer-file-name))))
+(setq org-use-sub-superscripts nil)
+(setq org-pretty-entities nil)
+(setq org-pretty-entities-include-sub-superscripts nil)
+
+;; (add-hook 'go-mode-hook
+;;           (lambda ()
+;;             (set (make-local-variable 'compile-command)
+;;                  (concat "go run " buffer-file-name))))
+
+
+;; Latex tweaks
+(setenv "PATH" (concat ":/Library/TeX/texbin/" (getenv "PATH")))
+(add-to-list 'exec-path "/Library/TeX/texbin/")
+
+(setq-default TeX-engine 'xetex)
+(setq-default TeX-PDF-mode t)
+(add-hook 'org-mode-hook
+          (λ! (yas-minor-mode)
+              (yas-activate-extra-mode 'latex-mode)))
+
+;; default vterm shell
+(setq vterm-shell "/bin/zsh")
+
+;; Mac stuff
+(setq mac-option-key-is-meta nil
+      mac-command-key-is-meta t
+      mac-command-modifier 'meta
+      mac-option-modifier 'none)
+
+;; automatically open images in org mode
+(setq org-startup-with-inline-images t)
 
 (add-hook! 'org-mode-hook
            #'+zen/toggle)
-(setq my/org-latex-scale 2)
-(setq org-format-latex-options (plist-put org-format-latex-options :scale my/org-latex-scale))
+(setq org-latex-create-formula-image-program 'dvisvgm)
+(setq org-preview-latex-default-process 'dvisvgm) ;No blur when scaling
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 3.6))
+(set-default 'preview-scale-function 3.6)
 
-(require 'quarto-mode)
+;; treat underscore as part of the word in python
+(add-hook 'python-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+
+(set-frame-parameter (selected-frame) 'alpha '(100 100))
+(add-to-list 'default-frame-alist '(alpha 100 100))
+
+(setq lsp-treemacs-symbols-sort-functions '(lsp-treemacs-sort-by-kind))
+(setq lsp-treemacs-symbols-position-params '((side . right) (slot . 2) (window-width . 30)))
+
+
+;; (require 'lsp-julia)
+(setq lsp-julia-package-dir nil)
+;; (setq lsp-julia-default-environment "~/.julia/environments/v1.8")
+(after! lsp-julia
+  (setq lsp-julia-default-environment "/Users/dusc/.julia/environments/v1.9"))
+(after! julia-mode
+ (add-hook! 'julia-mode-hook
+   (setq-local lsp-enable-folding t
+               lsp-folding-range-limit 100)))
+
+(setq inferior-julia-program-name "/usr/local/bin/julia")
+
+(require 'symbols-outline)
+(with-eval-after-load 'symbols-outline
+  ;; By default the ctags backend is selected
+(setq symbols-outline-fetch-fn #'symbols-outline-lsp-fetch)
+(setq symbols-outline-window-position 'left)
+)
+
+(setq org-timeblock-svg-height 1000)
+(setq org-timeblock-svg-width 1000)
+(setq image-scaling-factor 1)
+
+(defun my/er-open-with (arg)
+  "Open visited file in default external program."
+  (interactive "P")
+  (when buffer-file-name
+    (shell-command (concat
+                    (cond
+                     ((and (not arg) (eq system-type 'darwin)) "open")
+                     ((and (not arg) (member system-type '(gnu gnu/linux gnu/kfreebsd))) "xdg-open")
+                     (t (read-shell-command "Open current file with: ")))
+                    " "
+                    (shell-quote-argument buffer-file-name)))))
+
+;; (setq org-roam-node-display-template "${title} ${tags}")
+
+(defun my/org-roam-filter-by-tag (tag-name)
+  (lambda (node)
+    (member tag-name (org-roam-node-tags node))))
+
+ (defun my/org-roam-list-notes-by-tag (tag-name)
+  (interactive "P")
+  (mapcar #'org-roam-node-file
+          (seq-filter
+           (my/org-roam-filter-by-tag "FUN")
+           (org-roam-node-list))))
+
+
+(defun my/bibtex-completion-format-citation-org-cite (keys)
+  "Format org-links using Org mode's own cite syntax."
+  (format "[[cite:%1s][%2s]]"  (s-join ";"(--map (format "%s" it) keys )) (s-join ";" (--map (format "%s" it) keys))))
+    ;; (s-join ";"
+    ;;         (--map (format "%s" it) keys))))
+
+
+(setq bibtex-completion-format-citation-functions
+  '((org-mode      . my/bibtex-completion-format-citation-org-cite)
+    (latex-mode    . bibtex-completion-format-citation-cite)
+    (markdown-mode . bibtex-completion-format-citation-pandoc-citeproc)
+    (default       . bibtex-completion-format-citation-default)))
+
+(setq bibtex-completion-pdf-open-function
+  (lambda (fpath)
+    (call-process "open" nil 0 nil fpath)))
+
+(defun bibtex-completion-open-pdf-external (keys &optional fallback-action)
+  (let ((bibtex-completion-pdf-open-function
+         (lambda (fpath) (call-process "emacsclient" nil 0 nil fpath))))
+    (bibtex-completion-open-pdf keys fallback-action)))
+
+(ivy-bibtex-ivify-action bibtex-completion-open-pdf-external ivy-bibtex-open-pdf-external)
+
+(ivy-add-actions
+ 'ivy-bibtex
+ '(("P" ivy-bibtex-open-pdf-external "Open PDF file in emacs")))
+
+;; (setq lsp-pyright-multi-root nil)
+(setq lsp-pyright-venv-path "/Users/dusc/venv")
+
+;; You can use this hydra menu that have all the commands
+;; (map! :n "C-SPC" 'harpoon-quick-menu-hydra)
+(map! :n "C-s" 'harpoon-add-file)
+
+;; And the vanilla commands
+;; (map! :leader "j c" 'harpoon-clear)
+;; (map! :leader "j f" 'harpoon-toggle-file)
+(map! :leader "1" 'harpoon-go-to-1)
+(map! :leader "2" 'harpoon-go-to-2)
+(map! :leader "3" 'harpoon-go-to-3)
+(map! :leader "4" 'harpoon-go-to-4)
+(map! :leader "5" 'harpoon-go-to-5)
+(map! :leader "6" 'harpoon-go-to-6)
+(map! :leader "7" 'harpoon-go-to-7)
+(map! :leader "8" 'harpoon-go-to-8)
+(map! :leader "9" 'harpoon-go-to-9)
+
+(setq bibtex-completion-additional-search-fields '(tags))
+(setq orb-insert-link-description 'citekey)
+
+
+(use-package! websocket
+    :after org-roam)
+
+(use-package! org-roam-ui
+    :after org-roam ;; or :after org
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+;;  :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
+
+(setq org-roam-bibtex-mode t)
+(add-to-list 'magit-section-initial-visibility-alist (cons 'org-roam-node-section 'hide))

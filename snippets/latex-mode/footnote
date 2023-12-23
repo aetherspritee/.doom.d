@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: footnote
+# key: fn
+# condition: t
+# --
+\footnote[${1:num}]{${2:text}}
