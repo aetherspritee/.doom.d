@@ -40,6 +40,11 @@
 (package! org-timeblock
   :recipe (:host github :repo "ichernyshovvv/org-timeblock"))
 (package! org-roam-ui)
+(package! org-sticky-header)
+(package! nov)
+
+(package! org-modern-indent
+  :recipe (:host github :repo "jdtsmith/org-modern-indent"))
 
 
 ;; (unpin! org-roam)

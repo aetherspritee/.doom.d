@@ -1018,3 +1018,26 @@
 
 (setq org-roam-bibtex-mode t)
 (add-to-list 'magit-section-initial-visibility-alist (cons 'org-roam-node-section 'hide))
+
+
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+(defun my-nov-font-setup ()
+  (face-remap-add-relative 'variable-pitch :family "Liberation Serif"
+                                           :height 1.0))
+(add-hook 'nov-mode-hook 'my-nov-font-setup)
+(setq nov-text-width 80)
+(setq nov-text-width t)
+(setq visual-fill-column-center-text t)
+(add-hook 'nov-mode-hook 'visual-line-mode)
+(add-hook 'nov-mode-hook 'visual-fill-column-mode)
+
+(defun nov-display ()
+  (face-remap-add-relative 'variable-pitch :family "Liberation Serif"
+						   :height 1.5)
+  (toggle-scroll-bar -1)
+  (setq mode-line-format nil
+		nov-header-line-format ""
+		cursor-type nil))
+(setq nov-text-width 120)
+
+(add-hook 'org-mode-hook #'org-modern-indent-mode 90)
