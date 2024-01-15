@@ -951,7 +951,7 @@
 
 (defun my/bibtex-completion-format-citation-org-cite (keys)
   "Format org-links using Org mode's own cite syntax."
-  (format "[[cite:%1s][%2s]]"  (s-join ";"(--map (format "%s" it) keys )) (s-join ";" (--map (format "%s" it) keys))))
+  (format "roam:%1s"  (s-join ";"(--map (format "%s" it) keys ))))
     ;; (s-join ";"
     ;;         (--map (format "%s" it) keys))))
 
