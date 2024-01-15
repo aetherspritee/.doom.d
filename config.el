@@ -892,6 +892,7 @@
 
 ;; treat underscore as part of the word in python
 (add-hook 'python-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+(add-hook 'c-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
 
 (set-frame-parameter (selected-frame) 'alpha '(100 100))
 (add-to-list 'default-frame-alist '(alpha 100 100))
