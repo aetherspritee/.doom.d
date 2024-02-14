@@ -42,7 +42,7 @@
 (package! org-roam-ui)
 (package! org-sticky-header)
 (package! nov)
-
+(package! magit-todos)
 (package! org-modern-indent
   :recipe (:host github :repo "jdtsmith/org-modern-indent"))
 

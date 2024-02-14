@@ -21,7 +21,8 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-(setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 13.0 :weight 'semi-light)
+;; (setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 13.0 :weight 'semi-light)
+(setq doom-font (font-spec :family "GeistMono Nerd Font" :size 13.0 :weight 'semi-light)
 ;; (setq doom-font (font-spec :family "ProFont IIx Nerd Font" :size 12.0 :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "Tahoma" :size 12.0 :weight 'semi-light)
       doom-big-font (font-spec :family "CaskaydiaCove Nerd Font" :size 13.0 :weight 'semi-light)
@@ -604,7 +605,7 @@
 (setq org-noter-always-create-frame nil)
 (setq bibtex-completion-bibliography
       '("~/Roam/papers/lib.bib"))
-(setq bibtex-completion-library-path '("~/Roam/papers"))
+(setq bibtex-completion-library-path '("~/Roam/papers/"))
 
 ;; LSP and DAP stuff
 ;; (require 'dap-python)
@@ -1042,3 +1043,9 @@
 (setq nov-text-width 120)
 
 (add-hook 'org-mode-hook #'org-modern-indent-mode 90)
+
+(setq deft-directory "~/Roam"
+      deft-extensions '("org")
+      deft-recursive t)
+
+(magit-todos-mode 1)
