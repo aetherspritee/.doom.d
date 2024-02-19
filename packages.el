@@ -47,6 +47,14 @@
   :recipe (:host github :repo "jdtsmith/org-modern-indent"))
 
 
+(package! all-the-icons)
+(package! all-the-icons-completion)
+(package! all-the-icons-dired)
+(package! all-the-icons-ibuffer)
+(package! all-the-icons-ivy)
+(package! all-the-icons-nerd-fonts)
+(package! treemacs-all-the-icons)
+
 ;; (unpin! org-roam)
 ;; (package! org-roam-ui)
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:

@@ -21,8 +21,8 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-;; (setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 13.0 :weight 'semi-light)
-(setq doom-font (font-spec :family "GeistMono Nerd Font" :size 13.0 :weight 'semi-light)
+;; (setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 13.0 :weight 'medium)
+(setq doom-font (font-spec :family "GeistMono Nerd Font" :size 13.0 :weight 'medium)
 ;; (setq doom-font (font-spec :family "ProFont IIx Nerd Font" :size 12.0 :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "Tahoma" :size 12.0 :weight 'semi-light)
       doom-big-font (font-spec :family "CaskaydiaCove Nerd Font" :size 13.0 :weight 'semi-light)
@@ -484,47 +484,47 @@
 (setq +org-capture-notes-file "inbox.org")
 (setq +org-capture-projects-file "~/Dropbox/Orga/projects.org")
 
-(after! org-capture
-    (setq org-capture-templates
-          (doct `((,(format "%s\ttodo item" (all-the-icons-octicon "checklist" :face 'all-the-icons-dpink :v-adjust 0.01))
-                   :keys "t"
-                   :file +org-capture-todo-file
-                   :prepend t
-                   :headline "Inbox"
-                   :type entry
-                   :template ("* TODO %?"
-                              "SCHEDULED: %^T")
-                   )
-                  (,(format "%s\tinbox item" (all-the-icons-faicon "sticky-note-o" :face 'all-the-icons-purple :v-adjust 0.01))
-                   :keys "i"
-                   :file +org-capture-notes-file
-                   :prepend t
-                   :type entry
-                   :template ("* %?")
-                   )
-                  (,(format "%s\tproject idea" (all-the-icons-material "library_books" :face 'all-the-icons-orange :v-adjust 0.01))
-                   :keys "p"
-                   :file +org-capture-projects-file
-                   :prepend t
-                   :headline "PR0JECTS"
-                   :type entry
-                   :template ("* PROJ %^{Project name} [/] :%^{Tag|CODE|FUN|IMPROV}:"
-                              "** [ ] %?")
-                   )
-                  (, (format "%s\trandom thought" (all-the-icons-material "bubble_chart" :face 'all-the-icons-purple :v-adjust 0.01))
-                     :keys "r"
-                     :file "~/Roam/20220306201250-random_thoughts.org"
-                     :prepend t
-                     :type entry
-                     :template ("* %?"
-                                "%U"))
-                  (, (format "%s\tvid list" (all-the-icons-material "bubble_chart" :face 'all-the-icons-purple :v-adjust 0.01))
-                     :keys "v"
-                     :file "~/Roam/20220228205355-vidlist.org"
-                     :prepend t
-                     :type entry
-                     :template ("* %?")))))
-)
+;; (after! org-capture
+;;     (setq org-capture-templates
+;;           (doct `((,(format "%s\ttodo item" (all-the-icons-octicon "checklist" :face 'all-the-icons-dpink :v-adjust 0.01))
+;;                    :keys "t"
+;;                    :file +org-capture-todo-file
+;;                    :prepend t
+;;                    :headline "Inbox"
+;;                    :type entry
+;;                    :template ("* TODO %?"
+;;                               "SCHEDULED: %^T")
+;;                    )
+;;                   (,(format "%s\tinbox item" (all-the-icons-faicon "sticky-note-o" :face 'all-the-icons-purple :v-adjust 0.01))
+;;                    :keys "i"
+;;                    :file +org-capture-notes-file
+;;                    :prepend t
+;;                    :type entry
+;;                    :template ("* %?")
+;;                    )
+;;                   (,(format "%s\tproject idea" (all-the-icons-material "library_books" :face 'all-the-icons-orange :v-adjust 0.01))
+;;                    :keys "p"
+;;                    :file +org-capture-projects-file
+;;                    :prepend t
+;;                    :headline "PR0JECTS"
+;;                    :type entry
+;;                    :template ("* PROJ %^{Project name} [/] :%^{Tag|CODE|FUN|IMPROV}:"
+;;                               "** [ ] %?")
+;;                    )
+;;                   (, (format "%s\trandom thought" (all-the-icons-material "bubble_chart" :face 'all-the-icons-purple :v-adjust 0.01))
+;;                      :keys "r"
+;;                      :file "~/Roam/20220306201250-random_thoughts.org"
+;;                      :prepend t
+;;                      :type entry
+;;                      :template ("* %?"
+;;                                 "%U"))
+;;                   (, (format "%s\tvid list" (all-the-icons-material "bubble_chart" :face 'all-the-icons-purple :v-adjust 0.01))
+;;                      :keys "v"
+;;                      :file "~/Roam/20220228205355-vidlist.org"
+;;                      :prepend t
+;;                      :type entry
+;;                      :template ("* %?")))))
+;; )
 
 (setq display-time-day-and-date t)
 (setq display-time-24hr-format t)
@@ -914,12 +914,12 @@
 
 (setq inferior-julia-program-name "/usr/local/bin/julia")
 
-(require 'symbols-outline)
-(with-eval-after-load 'symbols-outline
-  ;; By default the ctags backend is selected
-(setq symbols-outline-fetch-fn #'symbols-outline-lsp-fetch)
-(setq symbols-outline-window-position 'left)
-)
+;; (require 'symbols-outline)
+;; (with-eval-after-load 'symbols-outline
+;;   ;; By default the ctags backend is selected
+;; (setq symbols-outline-fetch-fn #'symbols-outline-lsp-fetch)
+;; (setq symbols-outline-window-position 'left)
+;; )
 
 (setq org-timeblock-svg-height 1000)
 (setq org-timeblock-svg-width 1000)
@@ -1060,7 +1060,23 @@
 ;; Highlight Python docstrings with a different face.
 
 
-(add-hook 'julia-mode-hook
-  (lambda ()
-    (tree-sitter-hl-add-patterns nil
-      )
+;; (add-function :before-until tree-sitter-hl-face-mapping-function
+;;   (lambda (capture-name)
+;;     (pcase capture-name
+;;       ("julia.function.call" 'ivy-org)
+;;       )))
+
+;; (add-function :before-until tree-sitter-hl-face-mapping-function
+;;   (lambda (capture-name)
+;;     (pcase capture-name
+;; ("julia.function.arglist" 'org-tag)
+;;       )))
+
+;; (add-hook 'julia-mode-hook
+;;   (lambda ()
+;;     (tree-sitter-hl-add-patterns nil
+;;       [(call_expression (identifier)) @julia.function.call
+;;         (call_expression (argument_list (identifier))) @julia.function.arglist
+;;        ]
+
+;;       )))

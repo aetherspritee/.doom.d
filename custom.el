@@ -3,11 +3,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("afa47084cb0beb684281f480aa84dab7c9170b084423c7f87ba755b15f6776ef" default))
+ '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
  '(package-selected-packages
-   '(magit-todos helm-org-rifle nov org-sticky-header harpoon visual-regexp-steroids symbols-outline ess julia-repl lsp-julia))
- '(warning-suppress-log-types '((:warning) (defvaralias))))
+   '(treesit-auto treemacs-all-the-icons julia-ts-mode all-the-icons-nerd-fonts all-the-icons-ivy all-the-icons-ibuffer all-the-icons-dired all-the-icons-completion)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
