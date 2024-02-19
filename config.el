@@ -1049,3 +1049,18 @@
       deft-recursive t)
 
 (magit-todos-mode 1)
+
+;; (with-eval-after-load "lsp-mode"
+;; (lsp-register-client (make-lsp-client :new-connection (lsp-tramp-connection "pyright")
+;;               :major-modes '(python-mode)
+;;               :remote? t
+;;               :server-id 'pyright-remote))
+
+;; (add-to-list 'lsp-enabled-clients 'pyright-tramp))
+;; Highlight Python docstrings with a different face.
+
+
+(add-hook 'julia-mode-hook
+  (lambda ()
+    (tree-sitter-hl-add-patterns nil
+      )
