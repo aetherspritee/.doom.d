@@ -54,7 +54,7 @@
 (package! all-the-icons-ivy)
 (package! all-the-icons-nerd-fonts)
 (package! treemacs-all-the-icons)
-
+(package! ef-themes)
 ;; (unpin! org-roam)
 ;; (package! org-roam-ui)
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
