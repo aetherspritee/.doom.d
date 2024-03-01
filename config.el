@@ -1060,23 +1060,53 @@
 ;; Highlight Python docstrings with a different face.
 
 
-;; (add-function :before-until tree-sitter-hl-face-mapping-function
-;;   (lambda (capture-name)
-;;     (pcase capture-name
-;;       ("julia.function.call" 'ivy-org)
-;;       )))
+(add-function :before-until tree-sitter-hl-face-mapping-function
+  (lambda (capture-name)
+    (pcase capture-name
+      ("julia.function.call" 'lsp-face-semhl-function)
+      )))
 
-;; (add-function :before-until tree-sitter-hl-face-mapping-function
-;;   (lambda (capture-name)
-;;     (pcase capture-name
-;; ("julia.function.arglist" 'org-tag)
-;;       )))
+(add-function :before-until tree-sitter-hl-face-mapping-function
+  (lambda (capture-name)
+    (pcase capture-name
+("julia.attribute" 'lsp-face-semhl-interface)
+      )))
 
-;; (add-hook 'julia-mode-hook
-;;   (lambda ()
-;;     (tree-sitter-hl-add-patterns nil
-;;       [(call_expression (identifier)) @julia.function.call
-;;         (call_expression (argument_list (identifier))) @julia.function.arglist
-;;        ]
+(add-function :before-until tree-sitter-hl-face-mapping-function
+  (lambda (capture-name)
+    (pcase capture-name
+("julia.parameter.type" 'lsp-face-semhl-type)
+      )))
 
-;;       )))
+(add-function :before-until tree-sitter-hl-face-mapping-function
+  (lambda (capture-name)
+    (pcase capture-name
+("julia.struct.type" 'lsp-face-semhl-type)
+      )))
+
+(add-function :before-until tree-sitter-hl-face-mapping-function
+  (lambda (capture-name)
+    (pcase capture-name
+("julia.return" 'lsp-face-semhl-keyword)
+      )))
+
+
+(add-function :before-until tree-sitter-hl-face-mapping-function
+  (lambda (capture-name)
+    (pcase capture-name
+("julia.function_dec" 'lsp-face-semhl-definition)
+      )))
+
+(add-hook 'julia-mode-hook
+  (lambda ()
+    (tree-sitter-hl-add-patterns nil
+      [(call_expression ((identifier)+ @julia.function.call))
+       (field_expression (_) (identifier) @julia.attribute)
+       (typed_parameter (_) (identifier) @julia.parameter.type)
+       (return_statement "return" @julia.return)
+       (function_definition (identifier ) @julia.function_dec)
+       (typed_expression (parameterized_identifier) @julia.struct.type)
+       (typed_expression (_)(identifier) @julia.struct.type)
+       ]
+
+      )))
