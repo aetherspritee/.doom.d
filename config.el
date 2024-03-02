@@ -235,6 +235,15 @@
       :desc "Harpoon Hydra"
       "K" #'harpoon-quick-menu-hydra)
 
+(map! :leader
+      :desc "Org Timeblock"
+      "A D" #'org-timeblock)
+
+(map! :leader
+      :desc "Ivy todos"
+      "c T" #'ivy-magit-todos)
+
+
 (define-key evil-normal-state-map (kbd "tf") (lambda () (interactive) (+goto-function.outer)))
 (define-key evil-normal-state-map (kbd "tF") (lambda () (interactive) (+goto-previous-function.outer)))
 (define-key evil-normal-state-map (kbd "tc") (lambda () (interactive) (+goto-class.outer)))
