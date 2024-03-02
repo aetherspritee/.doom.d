@@ -329,7 +329,6 @@
 ;;  (setcdr (assoc "m" all-the-icons-extension-icon-alist)
 ;;  (cdr (assoc "matlab" all-the-icons-extension-icon-alist))))
 
-; TODO: Download Matlab mode via 'M-x' list-packages
 ;; (autoload 'matlab-mode "matlab" "Matlab Editing Mode" t)
 ;; (require 'matlab-load)
 ;; (add-to-list
@@ -1150,3 +1149,6 @@
           (cons "emacs-lsp-booster" orig-result))
       orig-result)))
 (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
+
+(poke-line-global-mode 1)
+(poke-line-set-pokemon "venusaur")

@@ -55,6 +55,7 @@
 (package! all-the-icons-nerd-fonts)
 (package! treemacs-all-the-icons)
 (package! ef-themes)
+(package! poke-line)
 ;; (unpin! org-roam)
 ;; (package! org-roam-ui)
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
