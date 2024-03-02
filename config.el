@@ -243,6 +243,9 @@
       :desc "Ivy todos"
       "c T" #'ivy-magit-todos)
 
+(map! :leader
+      :desc "kill compilation"
+      "c K" #'kill-compilation)
 
 (define-key evil-normal-state-map (kbd "tf") (lambda () (interactive) (+goto-function.outer)))
 (define-key evil-normal-state-map (kbd "tF") (lambda () (interactive) (+goto-previous-function.outer)))
