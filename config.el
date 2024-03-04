@@ -1098,6 +1098,12 @@
 (add-function :before-until tree-sitter-hl-face-mapping-function
   (lambda (capture-name)
     (pcase capture-name
+("julia.type.type" 'lsp-face-semhl-type)
+      )))
+
+(add-function :before-until tree-sitter-hl-face-mapping-function
+  (lambda (capture-name)
+    (pcase capture-name
 ("julia.return" 'lsp-face-semhl-keyword)
       )))
 
@@ -1118,6 +1124,7 @@
        (function_definition (identifier ) @julia.function_dec)
        (typed_expression (parameterized_identifier) @julia.struct.type)
        (typed_expression (_)(identifier) @julia.struct.type)
+       (parameterized_identifier) @julia.type.type
        ]
 
       )))
