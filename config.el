@@ -240,6 +240,10 @@
       "A D" #'org-timeblock)
 
 (map! :leader
+      :desc "Org Timeblock"
+      "A Q" #'org-timeblock-quit)
+
+(map! :leader
       :desc "Ivy todos"
       "c T" #'ivy-magit-todos)
 
@@ -1162,3 +1166,5 @@
 
 (poke-line-global-mode 1)
 (poke-line-set-pokemon "venusaur")
+
+(setq lsp-idle-delay 0.500)
