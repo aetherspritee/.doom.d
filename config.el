@@ -22,7 +22,7 @@
 ;; accept. For example:
 ;;
 ;; (setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 13.0 :weight 'medium)
-(setq doom-font (font-spec :family "GeistMono Nerd Font" :size 13.0 :weight 'medium)
+(setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 14.0 :weight 'medium)
 ;; (setq doom-font (font-spec :family "ProFont IIx Nerd Font" :size 12.0 :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "Tahoma" :size 12.0 :weight 'semi-light)
       doom-big-font (font-spec :family "CaskaydiaCove Nerd Font" :size 13.0 :weight 'semi-light)
@@ -37,7 +37,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 ;; (setq doom-theme 'doom-gruvbox)
-(setq doom-theme 'ef-cyprus)
+(setq doom-theme 'doom-dark+)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -903,11 +903,12 @@
            #'+zen/toggle)
 (setq org-latex-create-formula-image-program 'dvisvgm)
 (setq org-preview-latex-default-process 'dvisvgm) ;No blur when scaling
-(setq org-format-latex-options (plist-put org-format-latex-options :scale 3.6))
-(set-default 'preview-scale-function 3.6)
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+(set-default 'preview-scale-function 2.0)
 
 ;; treat underscore as part of the word in python
 (add-hook 'python-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+(add-hook 'julia-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
 (add-hook 'c-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
 
 (set-frame-parameter (selected-frame) 'alpha '(100 100))
@@ -1165,7 +1166,7 @@
 (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
 
 (poke-line-global-mode 1)
-(poke-line-set-pokemon "venusaur")
+(poke-line-set-pokemon "lapras")
 
 (setq lsp-idle-delay 0.500)
 
@@ -1176,3 +1177,6 @@
            (concat (dired-replace-in-string (getenv "HOME") "~" (buffer-file-name)) "::" (number-to-string (line-number-at-pos)))))
       (kill-new path-with-line-number)
       (message (concat path-with-line-number " copied to clipboard"))))
+
+(setq doom-dark+-blue-modeline t)
+(setq doom-dark+-padded-modeline nil)

@@ -46,7 +46,6 @@
 (package! org-modern-indent
   :recipe (:host github :repo "jdtsmith/org-modern-indent"))
 
-
 (package! all-the-icons)
 (package! all-the-icons-completion)
 (package! all-the-icons-dired)
