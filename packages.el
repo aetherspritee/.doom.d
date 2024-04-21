@@ -55,6 +55,9 @@
 (package! treemacs-all-the-icons)
 (package! ef-themes)
 (package! poke-line)
+(package! ghub)
+(package! catppuccin-theme)
+
 ;; (unpin! org-roam)
 ;; (package! org-roam-ui)
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
