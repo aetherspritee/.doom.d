@@ -22,7 +22,7 @@
 ;; accept. For example:
 ;;
 ;; (setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 13.0 :weight 'medium)
-(setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 14.0 :weight 'medium)
+(setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 12.5 :weight 'semi-bold)
 ;; (setq doom-font (font-spec :family "ProFont IIx Nerd Font" :size 12.0 :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "Tahoma" :size 12.0 :weight 'semi-light)
       doom-big-font (font-spec :family "CaskaydiaCove Nerd Font" :size 13.0 :weight 'semi-light)
@@ -37,7 +37,8 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 ;; (setq doom-theme 'doom-gruvbox)
-(setq doom-theme 'doom-dark+)
+;; (setq doom-theme 'doom-dark+)
+(setq doom-theme 'catppuccin)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -318,6 +319,7 @@
 (setq doom-modeline-major-mode-icon t)
 (setq doom-modeline-major-mode-color-icon t)
 (setq doom-modeline-persp-name t)
+(setq doom-modeline-github t)
 
 (setq org-roam-directory "~/Roam")
 
@@ -493,6 +495,18 @@
                   ))
          (todo "CURR"
                 ((org-agenda-overriding-header "🕜 Current projects\n")))
+          ))
+
+        ("W" "Uni Agenda"
+          ((todo "WORK"
+                (
+                 (org-agenda-overriding-header "⚠ BRUH\n")
+                   (org-agenda-span 30)
+                   (org-agenda-start-day "+0d")
+                   (org-agenda-show-all-dates nil)
+                   (org-agenda-entry-types '(:deadline))
+                   (org-deadline-warning-days 0)
+                 ))
           ))
         ))
 
@@ -1119,6 +1133,13 @@
 ("julia.function_dec" 'lsp-face-semhl-definition)
       )))
 
+(add-function :before-until tree-sitter-hl-face-mapping-function
+  (lambda (capture-name)
+    (pcase capture-name
+("julia.macro" 'lsp-face-semhl-default-library)
+      )))
+
+
 (add-hook 'julia-mode-hook
   (lambda ()
     (tree-sitter-hl-add-patterns nil
@@ -1129,6 +1150,7 @@
        (function_definition (identifier ) @julia.function_dec)
        (typed_expression (parameterized_identifier) @julia.struct.type)
        (typed_expression (_)(identifier) @julia.struct.type)
+       (macro_expression (macro_identifier ) @julia.macro)
        (parameterized_identifier) @julia.type.type
        ]
 
@@ -1180,3 +1202,21 @@
 
 (setq doom-dark+-blue-modeline t)
 (setq doom-dark+-padded-modeline nil)
+
+(defun my/connect-jabba ()
+  (interactive)
+  (dired "/ssh:dsc@jabba.king-little.ts.net#2222:~/"))
+
+
+(defun my/connect-ultron ()
+  (interactive)
+  (dired "/ssh:dsc@ultron.king-little.ts.net#2222:~/"))
+
+(after! lsp-mode
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "pylsp")
+                    :major-modes '(python-mode)
+                    :remote? t
+                    :server-id 'pylsp-remote))
+  )
+(setq catppuccin-flavor 'mocha)
