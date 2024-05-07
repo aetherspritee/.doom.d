@@ -334,84 +334,9 @@
       ("<Right>" hydra-move-splitter-right)
       ("<Left>" hydra-move-splitter-left))
 
-;;(after! all-the-icons
-;;  (setcdr (assoc "m" all-the-icons-extension-icon-alist)
-;;  (cdr (assoc "matlab" all-the-icons-extension-icon-alist))))
+;; (setq fancy-splash-image "~/Stuff/gnu.svg")
+(setq fancy-splash-image "~/Stuff/nasa.svg")
 
-;; (autoload 'matlab-mode "matlab" "Matlab Editing Mode" t)
-;; (require 'matlab-load)
-;; (add-to-list
-;; 'auto-mode-alist
-;; '("\\.m$" . matlab-mode))
-;; (setq matlab-indent-function t)
-;;(setq matlab-shell-command "~/MATLAB/bin/matlab")
-;;(defun my-matlab-hook ()
-;;   (display-line-numbers-mode 1))
-;;(add-hook 'matlab-mode-hook 'my-matlab-hook)
-(setq fancy-splash-image "~/Stuff/gnu.svg")
-
-
-;;;;;;; (setq mini-frame-show-parameters
-;;;;;;;         `((left . 0.5)
-;;;;;;;           (top . 1.0)
-;;;;;;;           (width . 1.0)
-;;;;;;;           (height . 5)
-;;;;;;;           (left-fringe . 12)
-;;;;;;;           (right-fringe .12)
-;;;;;;;           (child-frame-border-width . 0)
-;;;;;;;           (internal-border-width . 0)))
-
-
-;; (require 'svg-lib)
-;; (require 'svg-tag-mode)
-;; (require 'color)
-
-;; (setq svg-tag-tags '(
-;;                       (":UNI:" . ((lambda (tag) (svg-tag-make "Uni" :face 'shadow))))
-;;                       (":IMPROV:" . ((lambda (tag) (svg-tag-make "Improv"))))
-;;                       (":PROD:" . ((lambda (tag) (svg-tag-make "Prod"))))
-;;                       ("HOLD" . ((lambda (tag) (svg-tag-make "HOLD" :face 'transient-pink))))
-;;                       ("STRT" . ((lambda (tag) (svg-tag-make "START" :inverse t :face '+org-todo-cancel))))
-;;                       (":FUN:" . ((lambda (tag) (svg-tag-make "Fun" :face 'warning))))
-;;                      (":CODE:" . ((lambda (tag) (svg-tag-make "Code" :face 'match))))
-;;                       (":IMP:" . ((lambda (tag) (svg-tag-make "Important" :inverse t))))
-;;                       (":JP:" . ((lambda (tag) (svg-tag-make "JP" :inverse t :face 'org-headline-todo))))
-;;                       ;;("DONE" . ((lambda (tag) (svg-tag-make "DONE" :face 'fringe))))
-;;                       ("TODO" . ((lambda (tag) (svg-tag-make "TODO" :inverse t :face 'org-level-1))))
-;;                       ("THNK" . ((lambda (tag) (svg-tag-make "THNK" :inverse t :face 'org-level-1))))
-;;                       ("WORK" . ((lambda (tag) (svg-tag-make "WORK" :inverse t :face 'match))))
-;;                       ("PRCS" . ((lambda (tag) (svg-tag-make "PRCS" :inverse t :face 'warning))))
-;;                       ("CURR" . ((lambda (tag) (svg-tag-make "CURR" :face '+org-todo-cancel))))
-;;                       ("PROJ" . ((lambda (tag) (svg-tag-make "PROJ" :inverse t :face '+org-todo-project))))
-;;                       ("\\[#[A-Z]\\]" . ( (lambda (tag) (svg-tag-make tag :inverse t :face '+org-todo-cancel :beg 2 :end -1 :margin 0))))
-;;                       (":orange:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'org-code))))
-;;                       (":yellow:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face '+org-todo-onhold))))
-;;                       (":red:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face '+org-todo-cancel))))
-;;                       (":green:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'org-checkbox))))
-;;                       (":blue:" . ( (lambda (tag) (svg-tag-make "+" :inverse t :face 'dired-special))))
-;;                       ))
-;; (add-hook 'org-mode-hook
-;;           #'svg-tag-mode)
-;; (add-hook 'org-agenda-mode-hook
-;;           #'svg-tag-mode)
-
-;; (defun doom-dashboard-widget-head-text ()
-;;   (insert
-;;    "\n test"
-;;    (+doom-dashboard--center
-;;     (- +doom-dashboard--width 2)
-
-;;    "\n")))
-
-;; (defvar +doom-dashboard-functions
-;;   '(doom-dashboard-widget-banner
-;;     doom-dashboard-widget-head-text
-;;     doom-dashboard-widget-shortmenu
-;;     doom-dashboard-widget-loaded
-;;     doom-dashboard-widget-footer)
-;;   "List of widget functions to run in the dashboard buffer to construct the
-;; dashboard. These functions take no arguments and the dashboard buffer is current
-;; while they run.")
 
 (after! org
 (setq org-todo-keywords
@@ -983,7 +908,7 @@
 
 (defun my/bibtex-completion-format-citation-org-cite (keys)
   "Format org-links using Org mode's own cite syntax."
-  (format "roam:%1s"  (s-join ";"(--map (format "%s" it) keys ))))
+  (format "cite:%1s"  (s-join ";"(--map (format "%s" it) keys ))))
     ;; (s-join ";"
     ;;         (--map (format "%s" it) keys))))
 
@@ -1220,3 +1145,113 @@
                     :server-id 'pylsp-remote))
   )
 (setq catppuccin-flavor 'mocha)
+
+
+;; DASHBOARD CONFIG
+(defun doom-dashboard-widget-footer ()
+  (insert
+   "\n"
+   (+doom-dashboard--center
+    (- +doom-dashboard--width 2)
+    (with-temp-buffer
+      (insert-text-button (or (nerd-icons-faicon "nf-fae-planet" :face 'doom-dashboard-footer-icon :height 1.3 :v-adjust -0.15)
+                              (propertize "github" 'face 'doom-dashboard-footer))
+                          'action (lambda (_) (browse-url "https://github.com/hlissner/doom-emacs"))
+                          'follow-link t
+                          'help-echo "bruh lmao")
+      (buffer-string)))
+   "\n"))
+
+(defun doom-display-benchmark-h (&optional return-p)
+  (funcall (if return-p #'format #'message)
+           "loaded %d packages in %.03fs"
+           (- (length load-path) (length (get 'load-path 'initial-value)))
+           doom-init-time))
+
+
+(defun dashboard-text-lol (&optional return-p)
+  (funcall (if return-p #'format #'message)
+           "head in the clouds - but my gravity's centered"))
+
+(defun insert-dashboard-text ()
+    (insert
+     (propertize
+      (+doom-dashboard--center
+       +doom-dashboard--width
+       (dashboard-text-lol 'return))
+      'face 'doom-dashboard-loaded)
+     ))
+
+(defvar +doom-dashboard-menu-sections2
+  '(("Recently opened files"
+     :icon (nerd-icons-faicon "nf-fa-file_text" :face 'doom-dashboard-menu-title)
+     :action recentf-open-files)
+    ("Reload last session"
+     :icon (nerd-icons-octicon "nf-oct-history" :face 'doom-dashboard-menu-title)
+     :when (cond ((modulep! :ui workspaces)
+                  (file-exists-p (expand-file-name persp-auto-save-fname persp-save-dir)))
+                 ((require 'desktop nil t)
+                  (file-exists-p (desktop-full-file-name))))
+     :action doom/quickload-session)
+    ("Open private configuration"
+     :icon (nerd-icons-octicon "nf-oct-tools" :face 'doom-dashboard-menu-title)
+     :when (file-directory-p doom-user-dir)
+     :action doom/open-private-config)
+    )
+  )
+
+(defun doom-dashboard-widget-shortmenu ()
+  (insert "\n")
+  (dolist (section +doom-dashboard-menu-sections2)
+    (cl-destructuring-bind (label &key icon action when face key) section
+      (when (and (fboundp action)
+                 (or (null when)
+                     (eval when t)))
+        (insert
+         (+doom-dashboard--center
+          (- +doom-dashboard--width 1)
+          (let ((icon (if (stringp icon) icon (eval icon t))))
+            (format (format "%s%%s%%-10s" (if icon "%3s\t" "%3s"))
+                    (or icon "")
+                    (with-temp-buffer
+                      (insert-text-button
+                       label
+                       'action
+                       `(lambda (_)
+                          (call-interactively (or (command-remapping #',action)
+                                                  #',action)))
+                       'face (or face 'doom-dashboard-menu-title)
+                       'follow-link t
+                       'help-echo
+                       (format "%s (%s)" label
+                               (propertize (symbol-name action) 'face 'doom-dashboard-menu-desc)))
+                      (format "%-37s" (buffer-string)))
+                    ;; Lookup command keys dynamically
+                    (propertize
+                     (or key
+                         (when-let*
+                             ((keymaps
+                               (delq
+                                nil (list (when (bound-and-true-p evil-local-mode)
+                                            (evil-get-auxiliary-keymap +doom-dashboard-mode-map 'normal))
+                                          +doom-dashboard-mode-map)))
+                              (key
+                               (or (when keymaps
+                                     (where-is-internal action keymaps t))
+                                   (where-is-internal action nil t))))
+                           (with-temp-buffer
+                             (save-excursion (insert (key-description key)))
+                             (while (re-search-forward "<\\([^>]+\\)>" nil t)
+                               (let ((str (match-string 1)))
+                                 (replace-match
+                                  (upcase (if (< (length str) 3)
+                                              str
+                                            (substring str 0 3))))))
+                             (buffer-string)))
+                         "")
+                     'face 'doom-dashboard-menu-desc))))
+         (if (display-graphic-p)
+             ;; "\n\n"
+           "\n"))))))
+
+;; ADD INSERT-DASHBOARD-TEXT TO +DOOM-DASHBOARD-FUNCTIONS
