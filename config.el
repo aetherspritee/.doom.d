@@ -23,7 +23,7 @@
 ;;
 ;; (setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 12.0 :weight 'semi-light)
 ;;(setq doom-font (font-spec :family "ProFont Nerd Font" :size 12.0 :weight 'semi-light)
-(setq doom-font (font-spec :family "GeistMono Nerd Font" :size 12.0 :weight 'semi-light)
+(setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 12.0 :weight 'semi-bold)
       ;; (setq doom-font (font-spec :family "Tamzen" :size 15.0 :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "Source Sans Pro" :size 11.0 :weight 'semi-light)
       doom-big-font (font-spec :family "CaskaydiaCove Nerd Font" :size 11.0 :weight 'semi-light)
@@ -39,8 +39,12 @@
 ;; `load-theme' function. This is the default:
 (setq doom-gruvbox-dark-variant "hard")
 
-(setq doom-theme 'doom-gruvbox)
+;; (setq doom-theme 'doom-gruvbox)
+;; (setq doom-theme 'doom-tomorrow-night)
+(setq doom-theme 'doom-solarized-light)
 
+(setq corfu-preselect 'first)
+(setenv "LSP_USE_PLISTS" "true")
 (require 'yuck-mode)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -59,6 +63,7 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Dropbox/Orga/")
+
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -327,6 +332,72 @@
 (global-tree-sitter-mode)
 (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
 
+(add-function :before-until tree-sitter-hl-face-mapping-function
+              (lambda (capture-name)
+                (pcase capture-name
+                  ("julia.function.call" 'lsp-face-semhl-function)
+                  )))
+
+(add-function :before-until tree-sitter-hl-face-mapping-function
+              (lambda (capture-name)
+                (pcase capture-name
+                  ("julia.attribute" 'lsp-face-semhl-interface)
+                  )))
+
+(add-function :before-until tree-sitter-hl-face-mapping-function
+              (lambda (capture-name)
+                (pcase capture-name
+                  ("julia.parameter.type" 'lsp-face-semhl-type)
+                  )))
+
+(add-function :before-until tree-sitter-hl-face-mapping-function
+              (lambda (capture-name)
+                (pcase capture-name
+                  ("julia.struct.type" 'lsp-face-semhl-type)
+                  )))
+
+(add-function :before-until tree-sitter-hl-face-mapping-function
+              (lambda (capture-name)
+                (pcase capture-name
+                  ("julia.type.type" 'lsp-face-semhl-type)
+                  )))
+
+(add-function :before-until tree-sitter-hl-face-mapping-function
+              (lambda (capture-name)
+                (pcase capture-name
+                  ("julia.return" 'lsp-face-semhl-keyword)
+                  )))
+
+(add-function :before-until tree-sitter-hl-face-mapping-function
+              (lambda (capture-name)
+                (pcase capture-name
+                  ("julia.macro" 'lsp-face-semhl-default-library)
+                  )))
+
+(add-function :before-until tree-sitter-hl-face-mapping-function
+              (lambda (capture-name)
+                (pcase capture-name
+                  ("julia.function_dec" 'lsp-face-semhl-definition)
+                  )))
+
+(add-hook 'julia-mode-hook
+          (lambda ()
+            (tree-sitter-hl-add-patterns nil
+              [(call_expression ((identifier)+ @julia.function.call))
+               (macro_expression (macro_identifier ) @julia.macro)
+               (field_expression (_) (identifier) @julia.attribute)
+               (typed_parameter (_) (identifier) @julia.parameter.type)
+               (return_statement "return" @julia.return)
+               (function_definition (identifier ) @julia.function_dec)
+               (typed_expression (parameterized_identifier) @julia.struct.type)
+               (typed_expression (_)(identifier) @julia.struct.type)
+               (parameterized_identifier) @julia.type.type
+               ]
+
+              )))
+
+(setq all-the-icons-dired-monochrome 'nil)
+
 (defhydra hydra-zoom (global-map "<C-R>")
   "splitter"
   ("<Up>" hydra-move-splitter-up)
@@ -349,7 +420,8 @@
 (defun my-matlab-hook ()
   (display-line-numbers-mode 1))
 (add-hook 'matlab-mode-hook 'my-matlab-hook)
-(setq fancy-splash-image "~/Stuff/gnu.svg")
+;; (setq fancy-splash-image "~/Stuff/gnu.svg")
+(setq fancy-splash-image "~/Stuff/nasa.svg")
 
 
 ;;;;;;; (setq mini-frame-show-parameters
@@ -553,7 +625,7 @@
 ;; (parrot-set-parrot-type 'science)
 
 (setq lsp-julia-package-dir nil)
-(setq lsp-julia-default-environment "~/.julia/environments/v1.9")
+(setq lsp-julia-default-environment "~/.julia/environments/v1.10")
 
 (after! julia-mode
   (add-hook! 'julia-mode-hook
@@ -603,7 +675,7 @@
 (setq org-pretty-entities nil)
 (setq org-pretty-entities-include-sub-superscripts nil)
 (setq lsp-julia-package-dir nil)
-(setq lsp-julia-default-environment "~/.julia/environments/v1.9")
+(setq lsp-julia-default-environment "~/.julia/environments/v1.10")
 
 (add-hook 'org-mode-hook
           (λ! (yas-minor-mode)
@@ -872,3 +944,318 @@
 
 (setq org-roam-bibtex-mode t)
 (add-to-list 'magit-section-initial-visibility-alist (cons 'org-roam-node-section 'hide))
+
+(setq catppuccin-flavor 'mocha) ;; or 'latte, 'macchiato, or 'mocha
+;; (catppuccin-reload)
+
+;; (after! org-roam
+;;   (defun my/set-tab-theme ()
+;;     (let ((bg (face-attribute 'mode-line :background))
+;;           (fg (face-attribute 'default :foreground))
+;; 	  (hg (face-attribute 'default :background))
+;;           (base (face-attribute 'mode-line :background))
+;;           (box-width (/ (line-pixel-height) 4)))
+;;       (set-face-attribute 'tab-line nil
+;; 			  :background base
+;; 			  :foreground fg
+;; 			  :height 0.8
+;; 			  :inherit nil
+;; 			  :box (list :line-width -1 :color base)
+;; 			  )
+;;       (set-face-attribute 'tab-line-tab nil
+;; 			  :foreground fg
+;; 			  :background bg
+;; 			  :weight 'normal
+;; 			  :inherit nil
+;; 			  :box (list :line-width box-width :color bg))
+;;       (set-face-attribute 'tab-line-tab-inactive nil
+;; 			  :foreground fg
+;; 			  :background base
+;; 			  :weight 'normal
+;; 			  :inherit nil
+;; 			  :box (list :line-width box-width :color base))
+;;       (set-face-attribute 'tab-line-highlight nil
+;; 			  :foreground fg
+;; 			  :background hg
+;; 			  :weight 'normal
+;; 			  :inherit nil
+;; 			  :box (list :line-width box-width :color hg))
+;;       (set-face-attribute 'tab-line-tab-current nil
+;; 			  :foreground fg
+;; 			  :background hg
+;; 			  :weight 'normal
+;; 			  :inherit nil
+;; 			  :box (list :line-width box-width :color hg))))
+
+;;   (defun my/tab-line-name-buffer (buffer &rest _buffers)
+;;     "Create name for tab with padding and truncation.
+;; If buffer name is shorter than `tab-line-tab-max-width' it gets
+;; centered with spaces, otherwise it is truncated, to preserve
+;; equal width for all tabs.  This function also tries to fit as
+;; many tabs in window as possible, so if there are no room for tabs
+;; with maximum width, it calculates new width for each tab and
+;; truncates text if needed.  Minimal width can be set with
+;; `tab-line-tab-min-width' variable."
+;;     (with-current-buffer buffer
+;;       (let* ((window-width (window-width (get-buffer-window)))
+;;              (tab-amount (length (tab-line-tabs-window-buffers)))
+;;              (window-max-tab-width (if (>= (* (+ tab-line-tab-max-width 3) tab-amount) window-width)
+;;                                        (/ window-width tab-amount)
+;;                                      tab-line-tab-max-width))
+;;              (tab-width (- (cond ((> window-max-tab-width tab-line-tab-max-width)
+;;                                   tab-line-tab-max-width)
+;;                                  ((< window-max-tab-width tab-line-tab-min-width)
+;;                                   tab-line-tab-min-width)
+;;                                  (t window-max-tab-width))
+;;                            3)) ;; compensation for ' x ' button
+;;              (buffer-name (string-trim (buffer-name)))
+;;              (name-width (length buffer-name)))
+;;         (if (>= name-width tab-width)
+;;             (concat  " " (truncate-string-to-width buffer-name (- tab-width 2)) "…")
+;;           (let* ((padding (make-string (+ (/ (- tab-width name-width) 2) 1) ?\s))
+;;                  (buffer-name (concat padding buffer-name)))
+;;             (concat buffer-name (make-string (- tab-width (length buffer-name)) ?\s)))))))
+
+;;   (defun tab-line-close-tab (&optional e)
+;;     "Close the selected tab.
+;; If tab is presented in another window, close the tab by using
+;; `bury-buffer` function.  If tab is unique to all existing
+;; windows, kill the buffer with `kill-buffer` function.  Lastly, if
+;; no tabs left in the window, it is deleted with `delete-window`
+;; function."
+;;     (interactive "e")
+;;     (let* ((posnp (event-start e))
+;;            (window (posn-window posnp))
+;;            (buffer (get-pos-property 1 'tab (car (posn-string posnp)))))
+;;       (with-selected-window window
+;;         (let ((tab-list (tab-line-tabs-window-buffers))
+;;               (buffer-list (flatten-list
+;;                             (seq-reduce (lambda (list window)
+;;                                           (select-window window t)
+;;                                           (cons (tab-line-tabs-window-buffers) list))
+;;                                         (window-list) nil))))
+;;           (select-window window)
+;;           (if (> (seq-count (lambda (b) (eq b buffer)) buffer-list) 1)
+;;               (progn
+;;                 (if (eq buffer (current-buffer))
+;;                     (bury-buffer)
+;;                   (set-window-prev-buffers window (assq-delete-all buffer (window-prev-buffers)))
+;;                   (set-window-next-buffers window (delq buffer (window-next-buffers))))
+;;                 (unless (cdr tab-list)
+;;                   (ignore-errors (delete-window window))))
+;;             (and (kill-buffer buffer)
+;;                  (unless (cdr tab-list)
+;;                    (ignore-errors (delete-window window)))))))))
+
+;;   (unless (version< emacs-version "27")
+;;     (use-package tab-line
+;;       :ensure nil
+;;       :hook (after-init . global-tab-line-mode)
+;;       :config
+
+;;       (defcustom tab-line-tab-min-width 10
+;;         "Minimum width of a tab in characters."
+;;         :type 'integer
+;;         :group 'tab-line)
+
+;;       (defcustom tab-line-tab-max-width 30
+;;         "Maximum width of a tab in characters."
+;;         :type 'integer
+;;         :group 'tab-line)
+
+;;       (setq tab-line-close-button-show t
+;;             tab-line-new-button-show nil
+;;             tab-line-separator ""
+;;             tab-line-tab-name-function #'my/tab-line-name-buffer
+;;             tab-line-right-button (propertize (if (char-displayable-p ?▶) " ▶ " " > ")
+;;                                               'keymap tab-line-right-map
+;;                                               'mouse-face 'tab-line-highlight
+;;                                               'help-echo "Click to scroll right")
+;;             tab-line-left-button (propertize (if (char-displayable-p ?◀) " ◀ " " < ")
+;;                                              'keymap tab-line-left-map
+;;                                              'mouse-face 'tab-line-highlight
+;;                                              'help-echo "Click to scroll left")
+;;             tab-line-close-button (propertize (if (char-displayable-p ?×) " × " " x ")
+;;                                               'keymap tab-line-tab-close-map
+;;                                               'mouse-face 'tab-line-close-highlight
+;;                                               'help-echo "Click to close tab"))
+
+;;       (my/set-tab-theme)
+
+;;       ;;(dolist (mode '(ediff-mode process-menu-mode term-mode vterm-mode))
+;;       ;;(add-to-list 'tab-line-exclude-modes mode))
+;;       (dolist (mode '(ediff-mode process-menu-mode))
+;;         (add-to-list 'tab-line-exclude-modes mode))
+;;       ))
+
+;;   )
+;; (global-tab-line-mode t)
+
+
+;; DASHBOARD CONFIG
+(defun doom-dashboard-widget-footer ()
+  (insert
+   "\n"
+   (+doom-dashboard--center
+    (- +doom-dashboard--width 2)
+    (with-temp-buffer
+      (insert-text-button (or (nerd-icons-faicon "nf-fae-planet" :face 'doom-dashboard-footer-icon :height 1.3 :v-adjust -0.15)
+                              (propertize "github" 'face 'doom-dashboard-footer))
+                          'action (lambda (_) (browse-url "https://github.com/hlissner/doom-emacs"))
+                          'follow-link t
+                          'help-echo "bruh lmao")
+      (buffer-string)))
+   "\n"))
+
+(defun doom-display-benchmark-h (&optional return-p)
+  (funcall (if return-p #'format #'message)
+           "loaded %d packages in %.03fs"
+           (- (length load-path) (length (get 'load-path 'initial-value)))
+           doom-init-time))
+
+
+(defun dashboard-text-lol (&optional return-p)
+  (funcall (if return-p #'format #'message)
+           "head in the clouds - but my gravity's centered"))
+
+(defun insert-dashboard-text ()
+  (insert
+   (propertize
+    (+doom-dashboard--center
+     +doom-dashboard--width
+     (dashboard-text-lol 'return))
+    'face 'doom-dashboard-loaded)
+   ))
+
+(defvar +doom-dashboard-menu-sections2
+  '(("Recently opened files"
+     :icon (nerd-icons-faicon "nf-fa-file_text" :face 'doom-dashboard-menu-title)
+     :action recentf-open-files)
+    ("Reload last session"
+     :icon (nerd-icons-octicon "nf-oct-history" :face 'doom-dashboard-menu-title)
+     :when (cond ((modulep! :ui workspaces)
+                  (file-exists-p (expand-file-name persp-auto-save-fname persp-save-dir)))
+                 ((require 'desktop nil t)
+                  (file-exists-p (desktop-full-file-name))))
+     :action doom/quickload-session)
+    ("Open private configuration"
+     :icon (nerd-icons-octicon "nf-oct-tools" :face 'doom-dashboard-menu-title)
+     :when (file-directory-p doom-user-dir)
+     :action doom/open-private-config)
+    )
+  )
+
+(defun doom-dashboard-widget-shortmenu ()
+  (insert "\n")
+  (dolist (section +doom-dashboard-menu-sections2)
+    (cl-destructuring-bind (label &key icon action when face key) section
+      (when (and (fboundp action)
+                 (or (null when)
+                     (eval when t)))
+        (insert
+         (+doom-dashboard--center
+          (- +doom-dashboard--width 1)
+          (let ((icon (if (stringp icon) icon (eval icon t))))
+            (format (format "%s%%s%%-10s" (if icon "%3s\t" "%3s"))
+                    (or icon "")
+                    (with-temp-buffer
+                      (insert-text-button
+                       label
+                       'action
+                       `(lambda (_)
+                          (call-interactively (or (command-remapping #',action)
+                                                  #',action)))
+                       'face (or face 'doom-dashboard-menu-title)
+                       'follow-link t
+                       'help-echo
+                       (format "%s (%s)" label
+                               (propertize (symbol-name action) 'face 'doom-dashboard-menu-desc)))
+                      (format "%-37s" (buffer-string)))
+                    ;; Lookup command keys dynamically
+                    (propertize
+                     (or key
+                         (when-let*
+                             ((keymaps
+                               (delq
+                                nil (list (when (bound-and-true-p evil-local-mode)
+                                            (evil-get-auxiliary-keymap +doom-dashboard-mode-map 'normal))
+                                          +doom-dashboard-mode-map)))
+                              (key
+                               (or (when keymaps
+                                     (where-is-internal action keymaps t))
+                                   (where-is-internal action nil t))))
+                           (with-temp-buffer
+                             (save-excursion (insert (key-description key)))
+                             (while (re-search-forward "<\\([^>]+\\)>" nil t)
+                               (let ((str (match-string 1)))
+                                 (replace-match
+                                  (upcase (if (< (length str) 3)
+                                              str
+                                            (substring str 0 3))))))
+                             (buffer-string)))
+                         "")
+                     'face 'doom-dashboard-menu-desc))))
+         (if (display-graphic-p)
+             ;; "\n\n"
+             "\n"))))))
+
+;; ADD INSERT-DASHBOARD-TEXT TO +DOOM-DASHBOARD-FUNCTIONS
+;; (use-package! lsp-bridge
+;;   :config
+;;   (setq lsp-bridge-enable-log nil)
+;;   (global-lsp-bridge-mode)
+;;   )
+
+;; (define-key acm-mode-map (kbd "<tab>") #'acm-select-next)
+;; (define-key acm-mode-map (kbd "<backtab>") #'acm-select-prev)
+
+;; (add-hook 'prog-mode-hook
+;;           (lsp-mode -1)
+;;           (company-mode 0)
+;; (lambda () (interactive) (lsp-mode -1))
+;; (lambda () (interactive) (company-mode 0))
+;; )
+
+
+;; (after! python-mode
+;;   (add-hook! 'python-mode-hook
+;;     (setq-local lsp-mode -1
+;;                 company-mode 0)))
+
+;; (lsp-mode -1)
+
+(defun my/bibtex-completion-format-citation-org-cite (keys)
+  (format "cite:%1s" (s-join ";"(--map (format "%s" it) keys))))
+
+(setq bibtex-completion-format-citation-functions
+      '((org-mode       . my/bibtex-completion-format-citation-org-cite)
+        (latex-mode     . bibtex-completion-format-citation-cite)
+        (markdown-mode  . bibtex-completion-format-citation-pandoc-citeproc)
+        (default        . bibtex-completion-format-citation-default)))
+
+(setq read-process-output-max (* 2048 2048))
+(setq lsp-idle-delay 0.100)
+(setq lsp-log-io nil) ; if set to true can cause a performance hit
+(setq gc-cons-threshold 100000000)
+
+;; (use-package punch-line
+;;   :ensure nil
+;;   :after evil
+;;   :custom
+;;   (punch-weather-update) ;; Use weather service
+;;   :config
+;;   (setq
+;;    punch-line-separator "  "
+;;    punch-show-project-info t					;; Show project info
+;;    punch-show-git-info t						;; Show git info
+;;    punch-show-lsp-info t						;; Show eglot info
+;;    punch-show-copilot-info t					;; Show copilot
+;;    punch-show-battery-info t					;; Show battery status
+;;    punch-show-weather-info t					;; Weather info
+;;    punch-weather-latitude "56.7365"				;; Weather latitude
+;;    punch-weather-longitude "16.2981"			;; Weather longitude
+;;    punch-line-music-info '(:service apple))		;; Music service
+;;   (punch-line-mode 1))
+
+(setq company-idle-delay 0.1)
+(setq corfu-auto-delay 0.1)

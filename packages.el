@@ -38,6 +38,7 @@
 (package! harpoon)
 (package! doom-todo-ivy
   :recipe (:host github :repo "jsmestad/doom-todo-ivy"))
+(package! catppuccin-theme)
 
 (package! Org-timeblock
   :recipe (:host github :repo "ichernyshovvv/org-timeblock"))
@@ -46,6 +47,26 @@
   :recipe (:host github :repo "Theory-of-Everything/everforest-theme" :files ("everforest-hard-dark-theme.el")))
 (package! org-roam-ui)
 
+(when (package! lsp-bridge
+        :recipe (:host github
+                 :repo "aetherspritee/lsp-bridge"
+                 :branch "master"
+                 :files ("*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
+                 ;; do not perform byte compilation or native compilation for lsp-bridge
+                 :build (:not compile)))
+  (package! markdown-mode)
+  (package! yasnippet))
+
+
+;; (when (package! lsp-bridge
+;;         :recipe (:host github
+;;                  :repo "manateelazycat/lsp-bridge"
+;;                  :branch "master"
+;;                  :files ("*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
+;;                  ;; do not perform byte compilation or native compilation for lsp-bridge
+;;                  :build (:not compile)))
+;;   (package! markdown-mode)
+;;   (package! yasnippet))
 
 ;; (package! dape
 ;;   :recipe (:host github :repo "svaante/dape"))
