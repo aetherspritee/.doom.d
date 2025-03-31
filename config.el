@@ -41,9 +41,13 @@
 
 ;; (setq doom-theme 'doom-gruvbox)
 ;; (setq doom-theme 'doom-tomorrow-night)
-(setq doom-theme 'doom-solarized-light)
+;; (setq doom-theme 'doom-solarized-light)
+(setq doom-theme 'doom-kanagawa)
 
-(setq corfu-preselect 'first)
+(after! corfu
+        (setq corfu-preselect 'first)
+        (setq corfu-auto-delay 0.05)
+        )
 (setenv "LSP_USE_PLISTS" "true")
 (require 'yuck-mode)
 
@@ -51,7 +55,7 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
 
-(setq doom-modeline-height 35)
+(setq doom-modeline-height 25)
 
 (set-frame-parameter nil 'alpha-background 100)
 (add-to-list 'default-frame-alist '(alpha-background . 100))
@@ -1258,4 +1262,3 @@
 ;;   (punch-line-mode 1))
 
 (setq company-idle-delay 0.1)
-(setq corfu-auto-delay 0.1)

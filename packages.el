@@ -20,6 +20,8 @@
 (package! company-posframe)
 (package! darkroom)
 (package! mozc)
+(package! autothemer)
+(package! rainbow-mode)
 (package! mozc-cand-posframe)
 (package! org-noter-pdftools)
 (package! ewal)
