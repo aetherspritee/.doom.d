@@ -37,6 +37,7 @@
 (package! nov)
 (package! persist)
 (package! gruvbox-theme)
+(package! magit-todos)
 (package! harpoon)
 (package! doom-todo-ivy
   :recipe (:host github :repo "jsmestad/doom-todo-ivy"))

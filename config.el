@@ -230,6 +230,10 @@
       "n r D" #'org-roam-dailies-capture-today)
 
 (map! :leader
+      :desc "daily entry"
+      "v r" #'vr/replace)
+
+(map! :leader
       :desc "prev node"
       "B" #'org-mark-ring-goto)
 
