@@ -23,7 +23,7 @@
 ;;
 ;; (setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 12.0 :weight 'semi-light)
 ;;(setq doom-font (font-spec :family "ProFont Nerd Font" :size 12.0 :weight 'semi-light)
-(setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 12.0 :weight 'semi-bold)
+(setq doom-font (font-spec :family "CaskaydiaCove Nerd Font" :size 11.0 :weight 'semi-bold)
       ;; (setq doom-font (font-spec :family "Tamzen" :size 15.0 :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "Source Sans Pro" :size 11.0 :weight 'semi-light)
       doom-big-font (font-spec :family "CaskaydiaCove Nerd Font" :size 11.0 :weight 'semi-light)
@@ -39,10 +39,10 @@
 ;; `load-theme' function. This is the default:
 (setq doom-gruvbox-dark-variant "hard")
 
-;; (setq doom-theme 'doom-gruvbox)
+(setq doom-theme 'doom-gruvbox)
 ;; (setq doom-theme 'doom-tomorrow-night)
 ;; (setq doom-theme 'doom-solarized-light)
-(setq doom-theme 'doom-kanagawa)
+;; (setq doom-theme 'doom-kanagawa)
 
 (after! corfu
         (setq corfu-preselect 'first)
@@ -442,6 +442,67 @@
 ;;;;;;;           (child-frame-border-width . 0)
 ;;;;;;;           (internal-border-width . 0)))
 
+(require 'cl-lib)
+(require 'dbus)
+
+(defgroup zathura-sync-theme nil
+  "Synchronize Zathura's look and feel with Emacs."
+  :prefix "zathura-sync-theme-"
+  :group 'applications)
+
+(defcustom zathura-sync-theme-config-file "~/.config/zathura/theme"
+  "Config location to put colors into."
+  :type 'file
+  :group 'zathura-sync-theme)
+
+(defun zathura-sync-theme--write-config ()
+  "Overwrites theme config."
+  (with-temp-file zathura-sync-theme-config-file
+    (let ((fg (face-attribute 'default :foreground nil 'default))
+          (bg (face-attribute 'default :background nil 'default)))
+      (insert "# synced with emacs theme by zathura-sync-theme"
+              "\nset recolor-darkcolor \\" fg
+              "\nset recolor-lightcolor \\" bg
+              "\nset default-fg \\" fg
+              "\nset default-bg \\" bg
+              "\nset statusbar-bg \\" bg
+              "\nset statusbar-fg \\" fg
+              "\nset recolor true"))))
+
+(defun zathura-sync-theme--set (&rest _args)
+  "Writes theme config and sends Zathura D-Bus command to refresh it."
+  (let ((zathura-services (cl-remove-if-not (lambda (x) (cl-search "zathura" x))
+					    (dbus-list-names :session)))
+	(zathura-path "/org/pwmt/zathura")
+	(zathura-interface "org.pwmt.zathura")
+	(zathura-method "SourceConfig"))
+
+    (zathura-sync-theme--write-config)
+    (dolist (svc zathura-services)
+      (dbus-call-method-asynchronously :session
+                                       svc
+                                       zathura-path
+                                       zathura-interface
+                                       zathura-method
+                                       nil))))
+
+;;;###autoload
+(define-minor-mode zathura-sync-theme-mode
+  "Synchronize the look and feel of Zathura with Emacs."
+  :global t
+  :group 'zathura-sync-theme
+  :init-value nil
+  :lighter "Zathura"
+  (cond
+   (zathura-sync-theme-mode
+    (zathura-sync-theme--write-config)
+    (advice-add 'enable-theme :after #'zathura-sync-theme--set))
+
+   (t
+    (delete-file zathura-sync-theme-config-file)
+    (advice-remove 'enable-theme #'zathura-sync-theme--set))))
+
+(provide 'zathura-sync-theme)
 
 (require 'svg-lib)
 (require 'svg-tag-mode)
